@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-theme="dark" class="js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Game harness</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Roboto:wght@300;400;500;700&amp;display=swap">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/sections/play-games-b.css">
+  <link rel="stylesheet" href="../assets/css/sections/play-games-a.css">
+  <link rel="stylesheet" href="../assets/css/sections/play-games-c.css">
+  <link rel="stylesheet" href="../assets/css/sections/play.css">
+  <style>
+    html, body { height: 100%; background: #0D0B09; overflow: hidden; }
+    #orbs { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+    #stage { position: fixed; inset: 0; z-index: 1; background: rgba(13,11,9,.55); overflow: hidden; }
+    #stage > div { position: relative; height: 100%; overflow: auto; }
+    #toasts { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9; color: #fff; font: 13px Roboto; }
+    #log { position: fixed; z-index: 99; bottom: 4px; right: 6px; font: 10px monospace; color: #888; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <canvas id="orbs"></canvas>
+  <div id="stage"></div><div id="toasts"></div><div id="log"></div>
+  <script type="module">
+    import { orbs } from '../assets/js/core/orbs.js';
+    import { sound } from '../assets/js/lib/sound.js';
+    import { toast } from '../assets/js/core/toast.js';
+    import site from '../content/site.js';
+    const id = new URLSearchParams(location.search).get('id') || 'bingo';
+    orbs.init(); orbs.setTheme('dark');
+    const [mod, content] = await Promise.all([import(`../assets/js/games/${id}.js`), import(`../content/games/${id}.js`)]);
+    const c = document.createElement('div'); c.className = 'pl-stage'; document.getElementById('stage').appendChild(c);
+    window.__finish = null;
+    const ctx = { content: content.default, site, orbs, sound, toast, sheet: {}, best: null,
+      finish(r) { window.__finish = r; document.getElementById('log').textContent = 'finish ' + JSON.stringify(r); } };
+    window.__cleanup = mod.mount(c, ctx);
+  </script>
+</body>
+</html>

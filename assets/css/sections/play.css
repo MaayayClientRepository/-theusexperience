@@ -1,0 +1,145 @@
+/* play section styles (THE FUN HOUSE). Prefix pl-. Also holds the shared game "stage" chrome (.pl-stage, .pl-gh) used by the games. */
+
+#play .pl-head { align-items: end; }
+#play .pl-head__r { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: flex-end; }
+#play .pl-lead { margin: 1rem 0 0; max-width: 48ch; font-size: clamp(.92rem, 1.15vw, 1.1rem); }
+#play .pl-title { margin-top: .7rem; }
+/* breathing room: header -> cards */
+#play.screen { gap: clamp(22px, calc(4.6 * var(--vh1)), 44px); }
+#play .pl-head { row-gap: 14px; }
+#play .pl-all { flex: none; }
+
+/* ---------- Bento: 5 cols x 2 rows on laptop ---------- */
+#play .pl-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-template-areas: "likely likely fib wordbend wordbend" "numbers numbers fib crossword bingo";
+}
+#play .pl-card--likely { grid-area: likely; }
+#play .pl-card--fib { grid-area: fib; }
+#play .pl-card--wordbend { grid-area: wordbend; }
+#play .pl-card--crossword { grid-area: crossword; }
+#play .pl-card--numbers { grid-area: numbers; }
+#play .pl-card--bingo { grid-area: bingo; }
+
+#play .pl-card {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
+  padding: clamp(14px, 1.5vw, 24px); border-radius: var(--r-xl); min-height: 0;
+  --pl-tilt: 0;
+}
+#play .pl-card__glow {
+  position: absolute; z-index: 0; width: 70%; aspect-ratio: 1; right: -22%; bottom: -34%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 36% 30%, rgba(255, 251, 234, .95), rgba(246, 230, 180, .75) 26%, rgba(227, 194, 110, .45) 55%, rgba(227, 194, 110, 0) 72%);
+  filter: blur(6px); opacity: .85; transform: scale(1); transition: transform .9s var(--ease), opacity .6s;
+}
+#play .pl-card--tall .pl-card__glow { width: 130%; right: -45%; bottom: -16%; }
+#play .pl-card--wide .pl-card__glow { width: 46%; right: -8%; bottom: -60%; }
+#play .pl-card:hover .pl-card__glow, #play .pl-card:focus-visible .pl-card__glow { transform: scale(1.38) translate(-4%, -6%); opacity: 1; }
+#play .pl-card__ring { /* concentric hairlines echoing the orb */
+  position: absolute; z-index: 1; width: 52%; aspect-ratio: 1; right: -6%; top: -10%; border-radius: 50%; pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(203, 162, 74, .22), 0 0 0 26px rgba(255, 255, 255, .06), 0 0 0 27px rgba(203, 162, 74, .14);
+  transition: transform .9s var(--ease); }
+#play .pl-card:hover .pl-card__ring { transform: scale(1.2); }
+#play .pl-card__top, #play .pl-card__bot { position: relative; z-index: 3; }
+#play .pl-card__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+#play .pl-card__chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+#play .pl-chip {
+  display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: 999px;
+  font-family: var(--f-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-800);
+  background: rgba(255, 255, 255, .62); box-shadow: inset 0 0 0 1px var(--glass-ring); white-space: nowrap;
+}
+#play .pl-chip[hidden] { display: none; }
+#play .pl-chip--best { background: var(--ink); color: var(--gold-200); box-shadow: none; }
+#play .pl-card__orb, .pl-soon .pl-card__orb {
+  position: relative; display: grid; place-items: center; flex: none;
+  width: clamp(54px, 5.4vw, 84px); aspect-ratio: 1; border-radius: 50%; color: var(--gold-800);
+  background: var(--orb-gold);
+  box-shadow: 0 14px 30px -12px rgba(126, 93, 31, .7), inset 0 2px 0 rgba(255, 255, 255, .85), inset 0 -8px 16px rgba(126, 93, 31, .22), 0 0 0 7px rgba(255, 255, 255, .35);
+  transition: transform .7s var(--ease-spring), box-shadow .6s;
+}
+#play .pl-card__orb svg, .pl-soon .pl-card__orb svg { width: 42%; height: 42%; }
+#play .pl-card:hover .pl-card__orb { transform: scale(1.18) rotate(-6deg); box-shadow: 0 22px 40px -14px rgba(126, 93, 31, .8), inset 0 2px 0 rgba(255, 255, 255, .85), inset 0 -8px 16px rgba(126, 93, 31, .22), 0 0 0 12px rgba(255, 255, 255, .42), 0 0 60px 6px rgba(227, 194, 110, .55); }
+#play .pl-card__title { font-family: var(--f-display); font-weight: 400; font-size: clamp(1.45rem, 2.5vw, 2.5rem); line-height: .98; letter-spacing: -.02em; }
+#play .pl-card--tall .pl-card__title { font-size: clamp(1.6rem, 2.9vw, 3rem); }
+#play .pl-card__tag { margin-top: 6px; color: var(--fg-2); font-size: clamp(.8rem, .95vw, .95rem); line-height: 1.35; max-width: 30ch; }
+#play .pl-card__go {
+  margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border-radius: 999px;
+  font-size: .8rem; font-weight: 700; letter-spacing: .02em; color: var(--ink); background: var(--gold-fill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 8px 18px -8px rgba(126, 93, 31, .6); transition: transform .5s var(--ease-spring), padding .5s var(--ease);
+}
+#play .pl-card__go svg { transition: transform .5s var(--ease); }
+#play .pl-card:hover .pl-card__go { padding: 0 20px; transform: translateY(-2px); }
+#play .pl-card:hover .pl-card__go svg { transform: translateX(4px); }
+#play .pl-card.is-played .pl-card__go span { font-size: 0; }
+#play .pl-card.is-played .pl-card__go span::after { content: 'Play again'; font-size: .8rem; }
+
+@media (max-height: 780px) and (min-width: 900px) {
+  #play .pl-card:not(.pl-card--tall) .pl-card__tag { display: none; }
+  #play .pl-card:not(.pl-card--tall) .pl-card__go { margin-top: 6px; height: 30px; }
+  #play .pl-card__orb { width: clamp(46px, 4.4vw, 64px); }
+  #play .pl-card--likely .pl-card__tag, #play .pl-card--numbers .pl-card__tag { display: block; }
+}
+
+/* ---------- Tablet / phone ---------- */
+@media (max-width: 899px) {
+  #play { min-height: 0; }
+  #play .pl-head { align-items: flex-start; }
+  #play .pl-head__r { justify-content: space-between; width: 100%; }
+  #play .pl-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; grid-auto-rows: minmax(168px, auto);
+    grid-template-areas: "likely likely" "fib wordbend" "fib crossword" "numbers bingo";
+  }
+  #play .pl-card--fib { min-height: 340px; }
+  #play .pl-card--tall .pl-card__glow { width: 150%; right: -40%; bottom: -10%; }
+  #play .pl-card--tall .pl-card__title, #play .pl-card__title { font-size: clamp(1.4rem, 6vw, 2.1rem); }
+  #play .pl-card__tag { font-size: .8rem; }
+  #play .pl-card__orb { width: 54px; }
+  #play .pl-card--likely .pl-card__ring, #play .pl-card--numbers .pl-card__ring { width: 34%; }
+}
+@media (hover: none) { #play .pl-card:active .pl-card__glow { transform: scale(1.38); } #play .pl-card:active .pl-card__orb { transform: scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { #play .pl-card__glow, #play .pl-card__orb, #play .pl-card__ring { transition: none; } }
+
+/* ---------- Game stage + shared mini header (used by every game) ---------- */
+.pl-stage {
+  position: relative; height: 100%; overflow: auto; overscroll-behavior: contain; color: #F6F0E2;
+  --fg: #F6F0E2; --fg-2: rgba(246, 240, 226, .72); --fg-3: rgba(246, 240, 226, .46); --accent-text: var(--gold-300);
+  font-family: var(--f-ui); -webkit-tap-highlight-color: transparent;
+  display: flex; flex-direction: column;
+}
+.pl-soon { margin: auto; text-align: center; display: grid; justify-items: center; gap: 14px; padding: 24px; }
+.pl-soon h3 { font-family: var(--f-display); font-weight: 400; font-size: 2.4rem; }
+.pl-soon p { color: var(--fg-2); }
+.pl-gh {
+  flex: none; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+  padding: 10px var(--pad) 0; width: 100%;
+}
+.pl-gh__title { font-family: var(--f-display); font-size: clamp(1.3rem, 2.2vw, 1.9rem); letter-spacing: -.02em; line-height: 1; }
+.pl-gh__title em { font-style: italic; color: var(--gold-300); }
+.pl-gh__mid { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-300); text-align: center; white-space: nowrap; }
+.pl-gh__right { justify-self: end; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-2); display: flex; align-items: center; gap: 8px; }
+.pl-gh__right b { font-weight: 500; color: #FFF3C9; }
+.pl-dots { display: flex; gap: 6px; justify-content: center; }
+.pl-dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(246, 240, 226, .22); transition: background .4s, transform .4s var(--ease), box-shadow .4s; }
+.pl-dots i.is-done { background: var(--gold-400); }
+.pl-dots i.is-now { background: #FFF3C9; transform: scale(1.5); box-shadow: 0 0 10px 2px rgba(239, 214, 140, .8); }
+.pl-gbtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px; border-radius: 999px; cursor: pointer;
+  font: 700 .92rem var(--f-ui); letter-spacing: .01em; color: var(--ink); background: var(--gold-fill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 12px 28px -10px rgba(227, 194, 110, .6); transition: transform .4s var(--ease), filter .3s;
+}
+.pl-gbtn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+.pl-gbtn:active { transform: scale(.97); }
+.pl-gbtn svg { width: 1.1em; height: 1.1em; }
+.pl-gbtn--ghost { color: #F6F0E2; background: rgba(255, 255, 255, .07); box-shadow: inset 0 0 0 1px rgba(239, 214, 140, .3); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.pl-stage button:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 3px; }
+
+/* Tall cards: a luminous sphere fills the quiet middle so the card feels composed, not empty */
+#play .pl-card--tall::before {
+  content: ''; position: absolute; z-index: 0; left: 50%; top: 46%; width: min(70%, 220px); aspect-ratio: 1; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 34% 28%, rgba(255, 253, 240, .95), rgba(246, 230, 180, .8) 28%, rgba(227, 194, 110, .55) 60%, rgba(203, 162, 74, .25) 80%, transparent 82%);
+  box-shadow: 0 30px 60px -20px rgba(203, 162, 74, .45), inset 0 0 0 1px rgba(255, 255, 255, .6);
+  transition: transform .8s var(--ease);
+}
+#play .pl-card--tall:hover::before { transform: translate(-50%, -50%) scale(1.08); }
+@media (max-width: 899px) { #play .pl-card--tall::before { top: 42%; width: min(62%, 140px); } }

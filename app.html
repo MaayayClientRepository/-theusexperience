@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en" class="no-js is-door" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Prem &amp; Nivitha · 19 &amp; 20 November 2026 · Karur</title>
+  <meta name="description" content="Prem &amp; Nivitha are getting married in Karur on 19 &amp; 20 November 2026. Knock twice to come in.">
+  <meta name="theme-color" content="#FBF9F4">
+  <!-- Link previews (WhatsApp, Slack…). After deploying, make og:image / og:url absolute URLs. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Prem &amp; Nivitha are getting married">
+  <meta property="og:description" content="19 &amp; 20 November 2026 · Karur. Knock twice to come in.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Roboto:wght@300;400;500;700&amp;display=swap">
+
+  <script>
+    // The page runs inside the scaling shell (index.html); share links must point at the shell, not this file.
+    window.__pageLoc = (function () { try { return window.parent !== window ? window.parent.location : location; } catch (e) { return location; } })();
+    // Before paint: show the door unless ?skipdoor=1 or already opened this session.
+    (function () {
+      var d = document.documentElement, skip = false;
+      d.classList.remove('no-js'); d.classList.add('js');
+      try { skip = /[?&]skipdoor=1/.test(location.search) || sessionStorage.getItem('kalyanam:doorSeen') === 'true'; } catch (e) {}
+      if (skip) d.classList.remove('is-door');
+    })();
+  </script>
+
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/characters.css">
+  <link rel="stylesheet" href="assets/css/sections/door.css">
+  <link rel="stylesheet" href="assets/css/sections/home.css">
+  <link rel="stylesheet" href="assets/css/sections/story.css">
+  <link rel="stylesheet" href="assets/css/sections/us.css">
+  <link rel="stylesheet" href="assets/css/sections/wedding.css">
+  <link rel="stylesheet" href="assets/css/sections/play.css">
+  <link rel="stylesheet" href="assets/css/sections/play-games-a.css">
+  <link rel="stylesheet" href="assets/css/sections/play-games-b.css">
+  <link rel="stylesheet" href="assets/css/sections/play-games-c.css">
+  <link rel="stylesheet" href="assets/css/sections/karur.css">
+  <link rel="stylesheet" href="assets/css/sections/rsvp.css">
+  <link rel="stylesheet" href="assets/css/sections/footer.css">
+</head>
+<body>
+  <canvas id="orbs" aria-hidden="true"></canvas>
+
+  <!-- The knock-twice door (rendered by sections/door.js) -->
+  <div id="door" aria-label="Welcome"></div>
+
+  <header id="hud" class="hud">
+    <a class="hud__mono" href="#home" data-goto="home" aria-label="Back to the top"><i aria-hidden="true"></i><span>P·N</span></a>
+    <div class="hud__r">
+      <button class="hud__btn" id="hud-sound" type="button" aria-label="Sound"></button>
+      <a class="hud__pill" href="#rsvp" data-goto="rsvp">RSVP</a>
+    </div>
+  </header>
+
+  <main id="world">
+    <section id="home"    class="screen screen--flush" data-section data-dock data-title="Home"    data-icon="home"      data-theme="light"></section>
+    <section id="story"   class="screen" data-section data-dock data-title="Our Story" data-icon="book-open" data-theme="light"></section>
+    <section id="us"      class="screen" data-section data-dock data-title="The Couple" data-icon="heart"    data-theme="light"></section>
+    <section id="wedding" class="screen" data-section data-dock data-title="The Wedding" data-icon="calendar" data-theme="light"></section>
+    <section id="rsvp"    class="screen screen--flush" data-section data-dock data-title="RSVP" data-icon="mail" data-theme="light"></section>
+    <section id="play"    class="screen" data-section data-dock data-title="Fun House" data-icon="dice-5"   data-theme="light"></section>
+    <section id="karur"   class="screen" data-section data-dock data-title="Karur"     data-icon="map-pin"   data-theme="light"></section>
+    <footer  id="footer"  class="screen screen--flush" data-section data-title="Footer" data-theme="dark"></footer>
+  </main>
+
+  <nav id="dock" class="dock" aria-label="Sections"></nav>
+  <div id="toasts" aria-live="polite"></div>
+  <div id="cursor" aria-hidden="true"><i></i></div>
+  <noscript><p class="noscript">This site needs JavaScript to come alive. Please enable it.</p></noscript>
+
+  <script src="assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="assets/vendor/gsap/Draggable.min.js" defer></script>
+  <script src="assets/vendor/gsap/InertiaPlugin.min.js" defer></script>
+  <script src="assets/vendor/gsap/MotionPathPlugin.min.js" defer></script>
+  <script src="assets/vendor/gsap/DrawSVGPlugin.min.js" defer></script>
+  <script src="assets/vendor/gsap/SplitText.min.js" defer></script>
+  <script src="assets/vendor/gsap/ScrollToPlugin.min.js" defer></script>
+  <script src="assets/vendor/gsap/CustomEase.min.js" defer></script>
+  <script src="assets/vendor/gsap/Flip.min.js" defer></script>
+  <script src="assets/vendor/gsap/TextPlugin.min.js" defer></script>
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

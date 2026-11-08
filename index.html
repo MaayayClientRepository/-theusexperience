@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Prem &amp; Nivitha · 19 &amp; 20 November 2026 · Karur</title>
+  <meta name="description" content="Prem &amp; Nivitha are getting married in Karur on 19 &amp; 20 November 2026. Knock twice to come in.">
+  <meta name="theme-color" content="#FBF9F4">
+  <!-- Link previews (WhatsApp, Slack…). After deploying, make og:image / og:url absolute URLs. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Prem &amp; Nivitha are getting married">
+  <meta property="og:description" content="19 &amp; 20 November 2026 · Karur. Knock twice to come in.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #FBF9F4; }
+    #stage { position: fixed; left: 0; top: 0; border: 0; transform-origin: 0 0; background: #FBF9F4; visibility: hidden; }
+  </style>
+</head>
+<body>
+  <!--
+    Same proportions on every screen: the site is built for a fixed-width "design stage" (1440px wide on
+    desktop, 390px on phones) and this shell scales that stage uniformly to the real screen width.
+    The stage runs in an iframe so its media queries / vw units see the design size, not the device size.
+    Only the stage's height follows the screen, so the content never reflows between devices.
+  -->
+  <iframe id="stage" title="Prem &amp; Nivitha · wedding invitation" allow="autoplay; clipboard-write; web-share"></iframe>
+  <noscript><p style="font:16px sans-serif;padding:24px">This site needs JavaScript to come alive. Please enable it.</p></noscript>
+  <script>
+    (function () {
+      var f = document.getElementById('stage');
+      f.src = 'app.html' + location.search + location.hash;
+      f.addEventListener('load', function () { f.style.visibility = 'visible'; try { f.contentWindow.focus(); } catch (e) {} });
+
+      function fit() {
+        var W = window.innerWidth, H = window.innerHeight;
+        var portrait = H > W * 1.1;
+        var design = (W < 700 || portrait) ? (W < 500 ? 390 : 600) : 1440;
+        var s = W / design;
+        f.style.width = design + 'px';
+        f.style.height = (H / s) + 'px';
+        f.style.transform = 'scale(' + s + ')';
+      }
+      fit();
+      window.addEventListener('resize', fit);
+      window.addEventListener('orientationchange', fit);
+      if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
+    })();
+  </script>
+</body>
+</html>
