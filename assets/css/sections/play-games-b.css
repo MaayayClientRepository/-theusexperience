@@ -81,7 +81,7 @@
 .gm-bingo-free { display: grid; justify-items: center; gap: 6px; font-family: var(--f-mono); font-size: clamp(10px, 1.1vw, 14px); letter-spacing: .22em; text-transform: uppercase; font-weight: 600; }
 .gm-bingo-free i { width: clamp(18px, 2.4vw, 32px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #fff, #F6E6B4 35%, #B98E36 100%); box-shadow: 0 0 14px rgba(160, 120, 40, .6); }
 .gm-bingo-count { display: inline-block; min-width: 1ch; }
-.gm-bingo-word { display: flex; font-family: var(--f-display); font-size: clamp(76px, 17vw, 220px); line-height: .88; letter-spacing: -.05em; color: transparent; font-style: italic;
+.gm-bingo-word { display: flex; justify-self: center; width: max-content; font-family: var(--f-display); font-size: clamp(76px, 17vw, 220px); line-height: .88; letter-spacing: -.05em; color: transparent; font-style: italic;
   filter: drop-shadow(0 0 40px rgba(227, 194, 110, .45)); }
 .gm-bingo-word span { display: block; padding: 0 .04em; opacity: .14; color: transparent; background: linear-gradient(120deg, #E3C26E 0%, #FFF3C9 45%, #CBA24A 100%); -webkit-background-clip: text; background-clip: text; }
 .gm-bingo-word span.is-have { opacity: 1; }

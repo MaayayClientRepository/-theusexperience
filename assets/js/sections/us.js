@@ -6,6 +6,11 @@ import { characters } from '../lib/characters.js';
 import { sound } from '../lib/sound.js';
 import { bindCard, plusIcon } from '../core/sheet.js';
 
+const HEART = `<svg viewBox="0 0 52 48" width="38" height="35" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M26 41.5C17 35 6.5 27.5 5.6 17.5 5 10.5 9.8 5.2 16.2 5.6c3.6.2 6.6 2.4 8 5.8" stroke-width="2.6"/><path d="M23.6 11.2c1.9-4.4 6.3-7 11-6.4 5.9.8 9.6 6.3 8.4 12.6-1.5 8-9.6 15.6-18.6 23.6l-.9 1.4" stroke-width="2.3"/><path d="M10.6 14.6c.5-3.4 2.9-5.4 6-5.4" stroke-width="1.5" opacity=".6"/><path d="M29 41.8c-1.2-.6-2.2-1.6-3-2.8" stroke-width="1.6" opacity=".55"/></svg>`;
+const QUOTE_PATH = 'M9.6 6C5.4 7.6 2.5 11.5 2.5 16.8V26h10.2v-9.8H8c.2-2.6 1.6-4.4 3.9-5.4L9.6 6zm14.4 0c-4.2 1.6-7.1 5.5-7.1 10.8V26h10.2v-9.8h-4.7c.2-2.6 1.6-4.4 3.9-5.4L24 6z';
+const QUOTE_OPEN = `<svg class="us-quote us-quote--open" viewBox="0 0 28 32" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="${QUOTE_PATH}"/></svg>`;
+const QUOTE_CLOSE = `<svg class="us-quote us-quote--close" viewBox="0 0 28 32" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="${QUOTE_PATH}" transform="rotate(180 14 16)"/></svg>`;
+
 export function mount(el, ctx) {
   const c = ctx.content.us;
   el.classList.add('screen--flush');
@@ -39,11 +44,11 @@ export function mount(el, ctx) {
 function cardMarkup(p, k, i) {
   return html`
   <article class="card us-card us-card--${k}" aria-label="${p.name}: open profile">
-    <div class="us-portrait">${raw(ph({ label: `${p.name}, portrait`, file: p.photo, ratio: null, initial: p.name[0], className: 'us-ph' }))}</div>
+    <div class="us-portrait">${raw(ph({ label: `${p.name}, portrait`, file: p.cardPhoto || p.photo, ratio: null, initial: p.name[0], className: 'us-ph' }))}</div>
     <i class="us-orb" aria-hidden="true"></i>
     <p class="eyebrow us-role"><span>0${i + 1}</span> ${p.role}</p>
     <div class="us-info">
-      <h2 class="us-name"><span class="us-mask"><span>${p.name}</span></span></h2>
+      <h2 class="us-name" data-role="${p.role}"><span class="us-mask"><span>${p.name}</span></span></h2>
       <p class="us-nick">&ldquo;${p.nick}&rdquo;</p>
       <div class="us-bio"><p class="us-desc">${p.descriptor}</p>${raw(seal(p, 'us-seal--card'))}</div>
       </div>
@@ -78,18 +83,20 @@ function buildSheet(p, k, c) {
   <section class="us-hero">
     <div class="us-hero__pic">${raw(ph({ label: `${p.name}, portrait`, file: p.photo, ratio: null, initial: p.name[0] }))}</div>
     <div class="us-hero__txt">
-      <p class="eyebrow rv">${p.role} · ${p.full}</p>
-      <h2 class="us-hero__name"><span class="us-line"><span>${p.name}</span></span></h2>
-      <p class="us-hero__nick rv" style="--d:.2s">&ldquo;${p.nick}&rdquo;</p>
-      <div class="us-hero__bio rv" style="--d:.3s"><p class="us-hero__desc">${p.descriptor}</p>${raw(seal(p, 'us-seal--hero'))}</div>
-      ${p.tags?.length ? html`<p class="us-hero__tags rv" style="--d:.35s">${p.tags.join(' · ')}</p>` : ''}
-      <dl class="us-hero__facts rv" style="--d:.4s">${p.facts.map(([a, b]) => html`<div><dt>${a}</dt><dd>${b}</dd></div>`)}</dl>
+      <h2 class="us-hero__name" data-role="${p.role}"><span class="us-line"><span>${p.name}</span></span></h2>
+      <p class="us-hero__role rv" style="--d:.15s">${p.role}</p>
+      <i class="us-hero__rule rv" style="--d:.25s" aria-hidden="true"></i>
+      <p class="us-hero__nick rv" style="--d:.3s">&ldquo;${p.nick}&rdquo;</p>
+      <div class="us-hero__bio rv" style="--d:.4s">${raw(seal(p, 'us-seal--hero'))}</div>
     </div>
   </section>
 
   ${p.bio?.length ? html`<section class="us-sec us-longbio" aria-label="About ${p.name}">
     <p class="eyebrow rv">${p.bioNote}</p>
-    <div class="us-longbio__txt">${p.bio.map((t, i) => html`<p class="rv${i === p.bio.length - 1 ? ' us-longbio__end' : ''}" style="--d:${(i * .06).toFixed(2)}s">${t}</p>`)}${p.bioSign ? raw(`<p class="us-longbio__sign rv" aria-hidden="true"><span>-</span><svg viewBox="0 0 52 48" width="38" height="35" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M26 41.5C17 35 6.5 27.5 5.6 17.5 5 10.5 9.8 5.2 16.2 5.6c3.6.2 6.6 2.4 8 5.8" stroke-width="2.6"/><path d="M23.6 11.2c1.9-4.4 6.3-7 11-6.4 5.9.8 9.6 6.3 8.4 12.6-1.5 8-9.6 15.6-18.6 23.6l-.9 1.4" stroke-width="2.3"/><path d="M10.6 14.6c.5-3.4 2.9-5.4 6-5.4" stroke-width="1.5" opacity=".6"/><path d="M29 41.8c-1.2-.6-2.2-1.6-3-2.8" stroke-width="1.6" opacity=".55"/></svg></p>`) : ''}</div>
+    <div class="us-longbio__txt">${p.bio.map((t, i) => {
+      const first = i === 0, last = i === p.bio.length - 1;
+      return html`<p class="rv${last ? ' us-longbio__end' : ''}" style="--d:${(i * .06).toFixed(2)}s">${first ? raw(QUOTE_OPEN) : ''}${raw(esc(t).replace(/\[\[(.+?)\|(https?:[^\]]+)\]\]/g, '<a class="us-link" href="$2" target="_blank" rel="noopener">$1</a>'))}${last && p.bioHeart ? ' <3' : ''}</p>`;
+    })}${p.bioSign ? raw(`<p class="us-longbio__sign rv" aria-hidden="true"><span>-</span>${typeof p.bioSign === 'string' ? esc(p.bioSign) : HEART}</p>`) : ''}<p class="us-longbio__close rv" aria-hidden="true">${raw(QUOTE_CLOSE)}</p></div>
   </section>` : ''}
 
   <section class="us-sec us-sig" aria-labelledby="us-s-${k}">
@@ -117,9 +124,9 @@ function buildSheet(p, k, c) {
   </section>
 
   <section class="us-sec us-strip" aria-label="${L.strip}">
-    <div class="us-head rv"><p class="eyebrow">05 · ${L.strip}</p><h3 class="us-h2">${raw(p.stripTitle ? `${esc(p.stripTitle[0])} <em class="gold">${esc(p.stripTitle[1])}</em>` : her ? 'Her <em class="gold">pictures</em>' : 'His <em class="gold">pictures</em>')}</h3></div>
+    <div class="us-head us-head--g rv"><p class="eyebrow">05 · ${L.strip}</p><h3 class="us-h2">${raw(p.stripTitle ? `${esc(p.stripTitle[0])} <em class="gold">${esc(p.stripTitle[1])}</em>` : her ? 'Her <em class="gold">pictures</em>' : 'His <em class="gold">pictures</em>')}</h3></div>
     <div class="us-strip__row">
-      ${p.strip.map((s, i) => html`<figure class="us-strip__it rv" style="--d:${i * .06}s"><div>${raw(ph({ label: s, file: `assets/photos/us/${p.name.toLowerCase()}-${i + 1}.jpg`, ratio: null }))}</div><figcaption>${s}</figcaption></figure>`)}
+      ${p.strip.map((s, i) => html`<figure class="us-strip__it rv" style="--d:${i * .06}s"><div>${raw(ph({ label: s, file: `assets/photos/us/${p.name.toLowerCase()}-${i + 1}.jpg`, ratio: null }))}</div></figure>`)}
     </div>
   </section>
 

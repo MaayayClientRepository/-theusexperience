@@ -7,7 +7,6 @@ import { resultCard } from '../lib/gameEnd.js';
 export function mount(container, ctx) {
   const { content, sound, orbs, finish } = ctx;
   const names = content.names, N = Math.min(content.rounds, content.items.length);
-  const aboutOf = (w) => (w === 'both' ? `${names.a} & ${names.b}` : names[w]);
   let deck = [], i = 0, score = 0, locked = false, done = false, end = null;
   const timers = [];
   const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
@@ -41,7 +40,7 @@ export function mount(container, ctx) {
 
   function start() {
     deck = shuffle(content.items).slice(0, N).map((it) => ({
-      who: it.who, why: it.why,
+      title: it.title, why: it.why || '',
       lines: shuffle([...it.truths.map((t) => ({ t, fib: false })), { t: it.fib, fib: true }]),
     }));
     i = 0; score = 0; done = false; $('.gx-score').textContent = '0';
@@ -54,7 +53,7 @@ export function mount(container, ctx) {
     const r = deck[i]; locked = false;
     $('.gx-n').textContent = `${i + 1} / ${N}`;
     [...dots.children].forEach((d, n) => { d.className = n < i ? 'is-done' : n === i ? 'is-now' : ''; });
-    $('.gx-fib-about').innerHTML = `A few things about <em>${esc(aboutOf(r.who))}</em>`;
+    $('.gx-fib-about').innerHTML = `<em>${String(i + 1).padStart(2, '0')}</em> · ${esc(r.title)}`;
     slips.innerHTML = r.lines.map((l, n) => `
       <button class="gx-fib-slip" type="button" data-n="${n}" style="--d:${n * 90}ms">
         <span class="gx-fib-slip__n">${n + 1}</span><span class="gx-fib-slip__t">${esc(l.t)}</span><span class="gx-fib-slip__stamp" aria-hidden="true"></span>
@@ -77,7 +76,7 @@ export function mount(container, ctx) {
       if (k === n) b.classList.add(hit ? 'is-hit' : 'is-miss');
     });
     $('.gx-fib-verdict').innerHTML = `<span class="gx-badge ${hit ? 'is-hit' : 'is-miss'}">${icon(hit ? 'check' : 'x', { size: 14, stroke: 2.4 })}${hit ? 'Fib caught' : 'Fooled'}</span>`;
-    $('.gx-fib-why').textContent = r.why;
+    $('.gx-fib-why').textContent = r.why; $('.gx-fib-why').hidden = !r.why;
     $('.gx-next span').textContent = i === N - 1 ? 'See my result' : 'Next';
     hint.hidden = true; reveal.hidden = false;
     reveal.classList.remove('is-in'); void reveal.offsetWidth; reveal.classList.add('is-in');

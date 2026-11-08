@@ -1,10 +1,11 @@
 /**
- * WORD BEND · content. Each puzzle is a grid of letters. Every letter belongs to exactly one answer, and each answer is hidden as a
- * path that BENDS through the grid (up, down, left or right, never diagonal, never reusing a square). Read the clues, then drag through
- * the letters to spell an answer. Paths can be dragged in either direction. Clues are all about Prem, Nivitha and the wedding (canon only).
- * `rows`: the grid (equal-length strings). `clues`: { a: ANSWER (A–Z), q: the question }. The letters of all answers add up to the grid size.
+ * WORD BEND · content (the couple's own answer bank). Each puzzle is a grid of letters. Every letter belongs to exactly one answer, and each answer is hidden
+ * as a path that BENDS through the grid (up, down, left or right, never diagonal, never reusing a square). Read the clues, then drag through
+ * the letters to spell an answer. Paths can be dragged in either direction.
+ * `rows`: the grid (equal-length strings; need not be square). `clues`: { a: ANSWER (A–Z), qs: [questions] }. Every question in `qs` is the same
+ * difficulty: the game picks one at random for each answer each time a puzzle is shown. The letters of all answers add up to the grid size.
  * The grids below were generated and CHECKED so that each answer appears exactly once. If you change an answer, regenerate its grid
- * (a changed grid that hides an answer twice makes the puzzle unfinishable). Scoring: 100 per puzzle, minus 5 per wrong path and 15 per hint (never below 20). 300 is a perfect game.
+ * (a changed grid that hides an answer twice makes the puzzle unfinishable). Scoring: 100 per puzzle, minus 5 per wrong path and 15 per hint (never below 20). 200 is a perfect game.
  */
 import site from '../site.js';
 const a = site.couple.bride.first, b = site.couple.groom.first;
@@ -14,36 +15,20 @@ export default {
   intro: `Every question has an answer hidden in the letters. The words bend: drag through the squares to spell one. Every letter is used exactly once.`,
   hint: 'Drag through neighbouring letters, up, down, left or right',
   puzzles: [
-    { title: 'How we met',
-      rows: ['OJUTEA', 'FFNKFM', 'SIEIOS', 'PCDNUM', 'OEESRE', 'KEGASS'],
+    { title: "Mornings, movies & music",
+      rows: ["COFOC", "FFTRI", "EEHES", "LIRSU", "LERTM"],
       clues: [
-        { a: 'OFFICE',   q: 'Where it all started, in 2022' },
-        { a: 'JUNE',     q: 'The month they met' },
-        { a: 'TEAMS',    q: 'They work on different ones, at the same company' },
-        { a: 'SPOKE',    q: `Who did it first? ${a} ___ first, which is on the record` },
-        { a: 'KIND',     q: `What ${a} first noticed about ${b}` },
-        { a: 'MESSAGES', q: 'What barely stopped after that first day' },
-        { a: 'FOUR',     q: 'Cities lived or worked in, so far' },
+        { a: "COFFEE", qs: ["Nivitha likes hers strong and black", "The bride's preferred morning fuel", "No milk, no sugar, no negotiations"] },
+        { a: "FOREST", qs: ["Prem could happily spend hours exploring one", "Trees, trails and wildlife make this a happy place for the groom", "A place where Prem might lose track of time, but never interest"] },
+        { a: "THRILLER", qs: ["A movie genre both enjoy", "Suspense, twists and plenty to discuss afterward", "The kind of film that makes \"one more scene\" inevitable"] },
+        { a: "MUSIC", qs: ["Something that's always been part of Nivitha's life", "A constant companion through different moods", "Something the bride has never really been without"] },
       ] },
-    { title: 'The big day',
-      rows: ['MAHNOV', 'GAALCE', 'LRFFOM', 'ANEREB', 'KDELUN', 'ARURHC'],
+    { title: "Skies, clay & water",
+      rows: ["YATNUY", "AKESSR", "KPOTTE"],
       clues: [
-        { a: 'KARUR',    q: 'The town hosting the wedding' },
-        { a: 'MAHAL',    q: `Prem ___, the venue (it shares a name with ${b})` },
-        { a: 'NOVEMBER', q: 'The month of the wedding' },
-        { a: 'GARLAND',  q: 'Exchanged at the muhurtham' },
-        { a: 'LUNCH',    q: 'There are two, one each day. Come hungry' },
-        { a: 'COFFEE',   q: 'The counter opens at 6:30 AM. Bring a tumbler' },
-      ] },
-    { title: 'Just us',
-      rows: ['VIMESS', 'FRSONY', 'IGORGS', 'XMEOAD', 'ERMOPT', 'SEIRIR'],
-      clues: [
-        { a: 'MEMORIES', q: 'Four and a half years of them, and counting' },
-        { a: 'ROADTRIP', q: 'Thirty-two so far. Hills if possible' },
-        { a: 'SONGS',    q: 'Tamil film ___ on, for every drive' },
-        { a: 'VIRGO',    q: `${b}'s sign, despite the mess` },
-        { a: 'MESSY',    q: `${b} is gently ___` },
-        { a: 'FIXER',    q: `Broken, stuck or bothering you? ${b} is the ___` },
+        { a: "SUNSET", qs: ["Nivitha loves watching the sky change into this", "The evening spectacle that can make her stop and stare", "When the sky puts on its most beautiful show"] },
+        { a: "POTTERY", qs: ["One of Nivitha's creative hobbies", "Making something beautiful with clay", "A hobby involving a spinning wheel and very muddy hands"] },
+        { a: "KAYAK", qs: ["One of Prem's favorite ways to explore water", "A small boat moved using a double-bladed paddle", "Something the groom would happily take onto a river"] },
       ] },
   ],
   tiers: [

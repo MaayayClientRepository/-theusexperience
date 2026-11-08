@@ -53,10 +53,6 @@ export function mount(container, ctx) {
           <p class="gx-wb-note"></p>
           <button class="pl-gbtn gx-next" type="button"><span>Next</span>${icon('arrow-right', { size: 16, stroke: 2 })}</button>
         </div>
-        <div class="gx-start gx-wb-start">
-          <p class="gx-intro">${esc(C.intro)}</p>
-          <button class="pl-gbtn gx-wb-go" type="button">${icon('wand-sparkles', { size: 16, stroke: 2 })}<span>Begin</span></button>
-        </div>
       </div>
     </div>`;
   const $ = (s) => container.querySelector(s);
@@ -81,14 +77,14 @@ export function mount(container, ctx) {
   function renderClues() {
     list.innerHTML = clueOrder.map((k) => {
       const c = P[pi].clues[k], ok = !!found[k];
-      return `<li class="gx-wb-clue${ok ? ' is-ok' : ''}" style="--c:${HUES[k % HUES.length]}"><span class="gx-wb-pat">${ok ? esc(c.a) : esc('_ '.repeat(c.a.length).trim())}</span><span class="gx-wb-q">${esc(c.q)}</span></li>`;
+      return `<li class="gx-wb-clue${ok ? ' is-ok' : ''}" style="--c:${HUES[k % HUES.length]}"><span class="gx-wb-pat">${ok ? esc(c.a) : esc('_ '.repeat(c.a.length).trim())}</span><span class="gx-wb-q">${esc(qsel[k])}</span></li>`;
     }).join('');
   }
-  let clueOrder = [];
+  let clueOrder = [], qsel = [];
 
   function show() {
     const pz = P[pi]; rows = pz.rows; R = rows.length; W = rows[0].length; cells = rows.join('').split('');
-    answers = pz.clues.map((c) => c.a); found = answers.map(() => null); path = []; slips = 0; hints = 0; hintCell = -1; won = false; drag = false;
+    answers = pz.clues.map((c) => c.a); qsel = pz.clues.map((c) => (c.qs ? c.qs[Math.floor(Math.random() * c.qs.length)] : c.q)); found = answers.map(() => null); path = []; slips = 0; hints = 0; hintCell = -1; won = false; drag = false;
     board.style.setProperty('--cols', W); board.style.setProperty('--rows', R);
     lines.setAttribute('viewBox', `0 0 ${W * 100} ${R * 100}`);
     grid.innerHTML = cells.map((ch) => `<i class="gx-wb-cell"><b>${esc(ch)}</b></i>`).join('');
@@ -101,7 +97,7 @@ export function mount(container, ctx) {
     board.classList.remove('is-in'); void board.offsetWidth; board.classList.add('is-in'); container.scrollTop = 0;
   }
   function begin() {
-    started = true; $('.gx-wb-start').hidden = true; score = 0; done = false; $('.gx-score').textContent = '0';
+    started = true; score = 0; done = false; $('.gx-score').textContent = '0';
     dots.innerHTML = P.map(() => '<i></i>').join('');
     if (end) { end.stop(); end.node.remove(); end = null; }
     body.hidden = false; pi = 0; show();
@@ -180,10 +176,9 @@ export function mount(container, ctx) {
   board.addEventListener('pointerup', onUp); board.addEventListener('pointercancel', onUp);
   $('.gx-wb-hint').addEventListener('click', hint); $('.gx-wb-shuf').addEventListener('click', reshuffle);
   $('.gx-next').addEventListener('click', next);
-  $('.gx-wb-go').addEventListener('click', () => { sound.play('pop', { volume: .6 }); begin(); });
   const onKey = (e) => { if (e.key === 'Enter' && won && !done && e.target.tagName !== 'BUTTON') { e.preventDefault(); next(); } };
   document.addEventListener('keydown', onKey);
-  show();
+  begin();
 
   return () => { document.removeEventListener('keydown', onKey); timers.forEach(clearTimeout); if (end) end.stop(); };
 }

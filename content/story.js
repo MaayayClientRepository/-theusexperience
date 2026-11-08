@@ -38,11 +38,11 @@ export default {
       title: ['The', 'timeline'],
       // No titles. `file` is optional: leave it out and the card is pictureless.
       items: [
-        { date: '08 June 2022', text: 'It started today. We absolutely had no idea where this would take us!' },
-        { date: '04 September 2023', text: 'By this point, we knew this was more than just enjoying each other’s company. We were making space for each other in all the big and little parts of life.' },
-        { date: 'Last week of December 2023', text: 'We went from getting to know each other to becoming each other’s person... The realization that this is going to be something special.' },
-        { date: '08 June 2026', text: 'Countless memories in four years, slightly knowing there’s going to be so much to look forward to in a while.' },
-        { date: '28 June 2026', text: 'A promise made in front of our families. One big celebration ahead, and suddenly, the wedding felt very real!' },
+        { date: '08 June 2022', text: 'It started today. We absolutely had no idea where this would take us!', file: 'assets/photos/story/t1.jpg' },
+        { date: '04 September 2023', text: 'By this point, we knew this was more than just enjoying each other’s company. We were making space for each other in all the big and little parts of life.', file: 'assets/photos/story/t2.jpg' },
+        { date: 'Last week of December 2023', text: 'We went from getting to know each other to becoming each other’s person... The realization that this is going to be something special.', file: 'assets/photos/story/t3.jpg' },
+        { date: '08 June 2026', text: 'Countless memories in four years, slightly knowing there’s going to be so much to look forward to in a while.', file: 'assets/photos/story/t4.jpg' },
+        { date: '28 June 2026', text: 'A promise made in front of our families. One big celebration ahead, and suddenly, the wedding felt very real!', file: 'assets/photos/story/t5.jpg' },
         { date: '20 November 2026', text: 'The day we make it official, say our vows, and take on whatever comes next... Together, as husband and wife.', last: true },
       ],
     },
@@ -59,6 +59,10 @@ export default {
         { label: 'Fixing something', cap: 'Prem, fixing something. Again.', file: 'assets/photos/story/m6.jpg' },
         { label: 'The yes', cap: 'The yes, decided together.', file: 'assets/photos/story/m7.jpg' },
         { label: 'Next stop', cap: 'Next stop: Karur.', file: 'assets/photos/story/m8.jpg' },
+        { label: 'Memory eight', cap: 'Caption to come.', file: 'assets/photos/story/m12.jpg' },
+        { label: 'Memory nine', cap: 'Caption to come.', file: 'assets/photos/story/m9.jpg' },
+        { label: 'Memory ten', cap: 'Caption to come.', file: 'assets/photos/story/m10.jpg' },
+        { label: 'Memory eleven', cap: 'Caption to come.', file: 'assets/photos/story/m11.jpg' },
       ],
     },
 

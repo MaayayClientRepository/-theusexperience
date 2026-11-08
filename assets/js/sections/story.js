@@ -99,10 +99,10 @@ function buildSheet(s) {
   </section>
 
   <section class="st-mem" aria-labelledby="st-mem-h">
-    <div class="st-sec-head rv"><p class="eyebrow">${mem.eyebrow}</p><h3 id="st-mem-h" class="st-h2">${title2(mem.title)}</h3><p class="st-sub">${mem.sub}</p></div>
+    <div class="st-mem__top rv"><p class="eyebrow">${mem.eyebrow}</p><h3 id="st-mem-h" class="st-h2">${title2(mem.title)}</h3><p class="st-sub">${mem.sub}</p></div>
     <div class="st-rail__wrap rv">
       <div class="st-rail" tabindex="0" role="region" aria-label="Photo memories, scrollable">
-        ${mem.items.map((it, i) => html`<figure class="st-mem__it"><div class="st-mem__pic">${raw(ph({ label: it.label, file: it.file, ratio: null, tone: i % 2 ? 'gold' : 'gold' }))}</div><figcaption><b>${String(i + 1).padStart(2, '0')}</b></figcaption></figure>`)}
+        ${mem.items.map((it, i) => html`<figure class="st-mem__it"><div class="st-mem__pic">${raw(ph({ label: it.label, file: it.file, ratio: null, tone: i % 2 ? 'gold' : 'gold' }))}</div></figure>`)}
       </div>
       <div class="st-rail__btns">
         <button class="st-rbtn" type="button" data-dir="-1" aria-label="Previous photos">${raw(icon('arrow-left', { size: 18, stroke: 2 }))}</button>

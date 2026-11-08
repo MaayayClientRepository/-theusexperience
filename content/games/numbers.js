@@ -1,39 +1,48 @@
 /**
- * THE NUMBERS OF US · content (DUMMY figures taken from content/story.js and content/us.js; swap in the real ones).
- * Slide to guess. Scoring is by how close you land, measured against the slider's range (min to max).
- *   q: the question · unit: shown beside the number · min/max/step: slider · answer: the true value · note: one line shown after.
- * 6 of these are played per round.
+ * THE NUMBERS OF US · content (the couple's own answer key).
+ * No exact figures: every question is answered on one ordered scale, `scale` below (Less → Infinity).
+ *   q: the question · answer: the index of the right scale step (0 = first step).
+ *   note (optional): one line shown after the reveal.
+ * Scoring: the right step is full marks, one step away is partial credit. 10 of these are played per round.
  */
 import site from '../site.js';
 const a = site.couple.bride.first, b = site.couple.groom.first;
 
 export default {
-  intro: 'Guess the numbers behind our story. Closer is better. A bullseye is worth 100.',
-  rounds: 6,
+  intro: 'Guess how much, how many, how long. No exact numbers, just the right range.',
+  rounds: 10,
+  // Ordered low to high. `glyph` is the big symbol on the button.
+  scale: [
+    { id: 'less', label: 'Less', glyph: '·' },
+    { id: 'moderate', label: 'Moderate', glyph: '··' },
+    { id: 'many', label: 'Many', glyph: '···' },
+    { id: 'infinity', label: 'Infinity', glyph: '∞' },
+  ],
+  points: { exact: 100, near: 40 },   // exact step / one step away
   questions: [
-    { q: 'How many days since the coffee incident?', unit: 'days', min: 0, max: 4000, step: 5, answer: 2557,
-      note: 'One too-sweet coffee at a college fest, and nobody expected it to last the weekend.' },
-    { q: 'Cups of coffee shared, roughly?', unit: 'cups', min: 0, max: 3000, step: 10, answer: 1203,
-      note: 'Filter coffee. Dark. One sugar. The second cup is never discussed.' },
-    { q: 'How many times have we got lost on road trips?', unit: 'times', min: 0, max: 30, step: 1, answer: 11,
-      note: `Each time, ${a} blames the map. Each time, ${b} blames a feeling about a left turn.` },
-    { q: `How many times has ${a} watched the muhurtham video, to practise not crying?`, unit: 'times', min: 0, max: 100, step: 1, answer: 40,
-      note: 'The practice is not going well. The tissues are packed.' },
-    { q: `How many minutes early does ${a} arrive, on average?`, unit: 'min early', min: 0, max: 60, step: 1, answer: 20,
-      note: `${b} says ten minutes behind. ${a} says twenty. Both are correct, in their own time zones.` },
-    { q: 'How long did the engagement lunch run?', unit: 'minutes', min: 0, max: 480, step: 5, answer: 240,
-      note: 'Four hours. It covered most of Karur and settled none of the seating.' },
-    { q: `Hours does ${b} nap on a perfect Sunday?`, unit: 'hours', min: 0, max: 8, step: .5, answer: 3,
-      note: 'He calls it “a rest”. The cricket is on mute. The cat has the good cushion.' },
+    { q: `How many alarms does ${b} need before getting out of bed?`, answer: 1 },
+    { q: `How often does ${b} double-check for his phone, wallet and keys before leaving?`, answer: 0 },
+    { q: `How many photographs does ${a} take before settling on one?`, answer: 2 },
+    { q: `How much can ${b} talk about an adventure once he gets started?`, answer: 3 },
+    { q: `How many times does ${a} change her mind before deciding what to eat?`, answer: 1 },
+    { q: `How many browser tabs does ${b} typically have open?`, answer: 2 },
+    { q: `How much black coffee does ${a} need on a busy day?`, answer: 1 },
+    { q: 'How long before someone starts asking questions about the actors during a movie?', answer: 0 },
+    { q: 'How long can either of them stay silent after a disagreement?', answer: 0 },
+    { q: 'How many food options do they consider before ordering?', answer: 2 },
+    { q: `How often does ${b} forget where he’s kept something?`, answer: 2 },
+    { q: `How much checking does ${a} do before leaving to make sure everything is in place?`, answer: 2 },
+    { q: 'How long into a road trip before someone asks, “Are we there yet?”', answer: 1 },
+    { q: `How quickly can ${b} turn a simple outing into an adventure plan?`, answer: 0 },
+    { q: `How many things can ${a} juggle while still noticing everything around her?`, answer: 2 },
+    { q: `How long does ${b} need to get ready for a spontaneous adventure?`, answer: 0 },
+    { q: `How long would ${b} happily spend exploring a forest?`, answer: 3 },
+    { q: `How long does ${a} take to get ready for a special occasion?`, answer: 1 },
+    { q: `How long can ${b} go without noticing he’s hungry when he’s absorbed in something interesting?`, answer: 2 },
+    { q: 'How long does a supposedly quick dinner decision actually take?', answer: 2 },
   ],
-  // by distance from the answer as a share of the slider range
-  verdicts: [
-    { within: .01, title: 'Bullseye' },
-    { within: .05, title: 'So close' },
-    { within: .15, title: 'In the neighbourhood' },
-    { within: .3, title: 'Wandering' },
-    { within: 9, title: 'Different postcode' },
-  ],
+  verdicts: { exact: 'Spot on', near: 'One step off', far: 'Way off' },
+  // by share of the maximum points (highest first)
   tiers: [
     { min: .8, title: 'The couple’s accountant', line: 'You know the numbers better than the couple does. Please do the seating chart.' },
     { min: .6, title: 'Strong instincts', line: 'You have clearly been at the table when the stories were told.' },

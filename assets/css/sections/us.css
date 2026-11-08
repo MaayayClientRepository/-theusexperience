@@ -64,10 +64,11 @@
 .is-open > .us-qa__q .us-qa__i { transform: rotate(135deg); }
 .us-qa__a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .7s var(--ease); } .us-qa__a > div { overflow: hidden; }
 .is-open > .us-qa__a { grid-template-rows: 1fr; }
-.us-qa__ans { margin: 0; font-size: clamp(1.1rem, 1.7vw, 1.5rem); line-height: 1.5; max-width: 48ch; padding-top: 4px; }
+.us-qa__ans { margin: 0; font-size: clamp(1.1rem, 1.7vw, 1.5rem); line-height: 1.5; max-width: 48ch; padding-top: clamp(10px, 1.6vw, 20px); }
 .us-qa__oth { margin: 12px 0 0; padding-bottom: 6px; color: var(--fg-2); font-style: italic; max-width: 48ch; line-height: 1.5; } .us-qa__oth b { font-family: var(--f-mono); font-style: normal; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-text); margin-right: 8px; }
 .us-s .us-qa__it { border-top: 1px solid var(--glass-ring); } .us-s .us-qa__it:last-child { border-bottom: 1px solid var(--glass-ring); }
 .us-s .us-qa__a > div { padding-left: calc(clamp(14px, 2vw, 28px) + 2.4em); }
+.us-qa__a > div::after { content: ""; display: block; height: clamp(20px, 3vw, 36px); }
 /* photo strip */
 .us-strip { margin: 0 calc(var(--pad) * -1); } .us-strip > .us-head { padding: 0 var(--pad); } .us-strip__row { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(200px, 22vw, 340px); gap: clamp(10px, 1.4vw, 20px); overflow-x: auto; padding: 0 var(--pad) 8px; scrollbar-width: none; scroll-snap-type: x proximity; }
 .us-strip__row::-webkit-scrollbar { display: none; }
@@ -195,3 +196,30 @@
 .us-longbio__txt p { margin: 0; font-size: var(--fs-lead); line-height: 1.6; color: var(--fg-2); }
 .us-longbio__txt .us-longbio__end { font-family: var(--f-display); font-style: italic; color: var(--accent-text); }
 .us-longbio__sign { display: flex; justify-content: flex-end; align-items: center; gap: 8px; color: var(--accent-text); font-family: var(--f-display); font-size: 1.6rem; line-height: 1; margin-top: .2em; }
+
+/* quote marks around the long-form bios, heart + initials sign-off */
+.us-quote { width: 1.15em; height: 1.15em; color: var(--accent-text); opacity: .55; vertical-align: -.2em; flex: none; }
+.us-quote--open { margin-right: .35em; }
+.us-quote--close { margin-left: .3em; }
+.us-longbio__close { display: flex; justify-content: flex-end; margin: 0; font-size: var(--fs-lead); }
+.us-quote--close { margin-left: 0; }
+.us-longbio__txt .us-link { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.us-head--g { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 14px; align-items: center; } .us-head--g .eyebrow { grid-column: 1 / -1; } .us-head--g .us-h2 { grid-column: 1; margin: 0; } 
+/* Closed cards: just the photo. Prem: name top-right · Nivitha: name bottom-left · wax seal bottom-right on both; tap cue moves top-left */
+.us-card .us-orb, .us-card .us-role, .us-card .us-nick, .us-card .us-desc { display: none; }
+.us-card .us-info, .us-card .us-bio { display: contents; }
+.us-card .us-name { position: absolute; z-index: 4; margin: 0; width: max-content; max-width: calc(100% - 24px); font-size: clamp(2.8rem, min(5.4vw, calc(10 * var(--vh1))), 4.8rem); line-height: 1; padding: clamp(10px, 1.2vw, 18px) clamp(20px, 2.2vw, 32px); border-radius: 999px; background: rgba(21, 18, 13, .6); color: #F6F0E2; -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4); box-shadow: inset 0 0 0 1px rgba(227, 194, 110, .3), 0 20px 40px -24px rgba(0, 0, 0, .6); }
+.us-card .us-mask { padding-bottom: .14em; margin-bottom: -.14em; }
+.us-card--groom .us-name { bottom: clamp(12px, 1.4vw, 20px); left: clamp(12px, 1.4vw, 20px); }
+.us-card--bride .us-name { bottom: clamp(12px, 1.4vw, 20px); left: clamp(12px, 1.4vw, 20px); }
+.us-card .us-bio .us-seal { position: absolute; z-index: 4; right: clamp(12px, 1.4vw, 20px); bottom: clamp(12px, 1.4vw, 20px); margin: 0; color: var(--gold-300); --sz: clamp(68px, 6.4vw, 88px); border-radius: 50%; background: rgba(21, 18, 13, .6); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 14px 30px -16px rgba(0, 0, 0, .7); }
+.us-card .plus { right: auto; bottom: auto; left: clamp(12px, 1.4vw, 20px); top: clamp(12px, 1.4vw, 20px); }
+.us-card .us-name { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border-radius: 34px; padding-bottom: clamp(10px, 1.1vw, 16px); }
+.us-card .us-name::after { content: attr(data-role); font-family: 'Great Vibes', 'Snell Roundhand', cursive; font-size: clamp(1.7rem, 2.6vw, 2.5rem); font-weight: 400; letter-spacing: 0; text-transform: none; line-height: 1; margin-top: -.1em; color: var(--gold-300); }
+
+/* profile hero: name, script role (same voice as the home card), nickname, wax seal. Nothing else. */
+.us-hero__txt { justify-items: start; gap: clamp(8px, calc(1.4 * var(--vh1)), 16px); }
+.us-hero__role { margin: 0; font-family: 'Great Vibes', 'Snell Roundhand', cursive; font-weight: 400; font-size: clamp(2.6rem, min(5vw, calc(9 * var(--vh1))), 4.6rem); line-height: 1; letter-spacing: 0; text-transform: none; color: var(--gold-300); margin-top: -.1em; }
+.us-hero__rule { display: block; width: clamp(80px, 12vw, 160px); height: 1px; margin: clamp(10px, calc(2 * var(--vh1)), 22px) 0 clamp(4px, 1vh, 10px); background: linear-gradient(90deg, var(--gold-300), transparent); }
+.us-hero__bio { display: flex; align-items: center; margin-top: clamp(6px, 1.4vh, 16px); }
+@media (max-width: 760px) { .us-hero__txt { justify-items: center; text-align: center; } .us-hero__rule { background: linear-gradient(90deg, transparent, var(--gold-300), transparent); } }

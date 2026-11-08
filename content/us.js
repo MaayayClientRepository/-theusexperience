@@ -23,7 +23,9 @@ export default {
       `She has this lovely way of making people feel understood without making a big production of it. She celebrates the little things, stands firm when it matters, and brings an extraordinary amount of warmth, laughter, and colour wherever she goes.`,
       `If my life were a movie, she’d be its background score. Not always the thing you notice, but take it away, and the whole thing falls flat. She’s the music to my life, and I wouldn’t have it any other way.`,
     ],
-    photo: 'assets/photos/us/nivitha.jpg',
+    bioHeart: true,
+    bioSign: 'PV',   // “- PV” on the right, after the closing quote
+    photo: 'assets/photos/us/nivitha-card.jpg',   // one photo: the home card and the profile hero share it
     facts: [['Born', '3 October 2000']],
     tags: ['Sharp', 'Organised', 'Honest'],
     // TODO: portrait caption from the doc ("Nivitha, mid-plan") has no slot on the page yet
@@ -59,10 +61,10 @@ export default {
     ],
     mentions: ['Thoughtful', 'Diplomatic', 'Calm', 'Empathetic'],
     stripTitle: ['Nivitha, in', 'frames'],
-    strip: ['The office, June 2022', 'A Sunday with a book', 'Planning the next trip', 'On the road, with a plan', 'The day we decided'],
+    strip: ['The office, June 2022', 'A Sunday with a book', 'Planning the next trip', 'On the road, with a plan', 'The day we decided', 'Caption to come.', 'Caption to come.', 'Caption to come.', 'Caption to come.', 'Caption to come.', 'Caption to come.'],
     then: {
       title: 'Then & now',
-      a: { year: '2023', label: 'Then', file: 'assets/photos/us/nivitha-then.jpg' },
+      a: { year: '2022', label: 'Then', file: 'assets/photos/us/nivitha-then.jpg' },
       b: { year: '2026', label: 'Now', file: 'assets/photos/us/nivitha-now.jpg' },
     },
   },
@@ -76,13 +78,13 @@ export default {
     bio: [
       `Prem has never met a mountain he didn’t want to climb, a water body he didn’t want to swim in, a trail he didn’t want to wander off on, or a leech bite he was sad about. :)`,
       `An only child who grew up doing everything on his own, he has somehow turned out to be one of the warmest-hearted people I know. He's curious about the world, drawn to nature, and so thoughtful in ways that don't always announce themselves.`,
-      `He has a way of making life feel a little less ordinary and quietly changing people's lives just by being himself. He didn’t need an Insta account to influence people, if you ask me. Ask him to plan a relaxing vacation, and he'll suggest skydiving, scuba diving, and a marathon before breakfast!`,
+      `He has a way of making life feel a little less ordinary and quietly changing people's lives just by being himself. He didn’t need an [[Insta account|https://www.instagram.com/premexperiences/]] to influence people, if you ask me. Ask him to plan a relaxing vacation, and he'll suggest skydiving, scuba diving, and a marathon before breakfast!`,
       `And when something truly interests him, he gives it everything. Sleep, hunger, time (and occasionally, Nivi) can all wait. (Oops.)`,
       `He feels deeply, notices the little things about the people he loves, and will show up at your door at 3 AM if you need him. Every dog on the street gets a hello, every bird overhead gets his attention, and somewhere in his heart, there's a room for every creature, whether it flies, crawls, swims, or slithers!`,
       `I am so glad the universe pushed this goofball my way! :)`,
     ],
     bioSign: true,   // ends the bio with “- ♡” (a hand-drawn heart)
-    photo: 'assets/photos/us/prem.jpg',
+    photo: 'assets/photos/us/prem-card.jpg',   // one photo: the home card and the profile hero share it
     facts: [['Born', '7 September 2000']],
     tags: ['Thoughtful', 'Gentle', 'Fixes things'],
     // TODO: portrait caption from the doc ("Prem, in his calmest form") has no slot on the page yet
@@ -91,19 +93,20 @@ export default {
       { q: 'Describe Prem in one sentence.', a: 'The kindest, most thoughtful, ridiculously loving and intelligent person I know, who never gives up on me and will forever be my biggest cheerleader. A little too adventurous for his own good, but we’ll let that slide.' },
       { q: 'What did you first notice about him?', a: 'He was different. There was something about the way he looked at life, the way he spoke about his family, and how much importance he gave to growing as a person. He was so genuinely kind about everything. He seemed to approach life with a certain curiosity and openness that I hadn’t quite come across before. I remember thinking there was a lot more to this guy than first meets the eye.' },
       { q: 'His most unreasonable habit?', a: 'His absolute refusal to plan things in advance! Prem and the concept of planning have never really been the best of friends. He’s perpetually operating on the assumption that everything will somehow work itself out. And to be fair, sometimes it does. His spontaneity has its charm, but there’s always that little window of chaos before it does.' },
-      { q: 'His superpower?', a: 'The sheer amount of things this man can fit into one day is honestly ridiculous. A marathon, a project, a new adventure, some obscure discovery he’s suddenly fascinated by — all in the same day, apparently. And when something catches his interest, the rest of the world might as well disappear. Sleep, hunger and time are merely suggestions. I sometimes wonder if he’s secretly figured out how to get more than 24 hours out of a day.' },
+      { q: 'His superpower?', a: 'The sheer amount of things this man can fit into one day is honestly ridiculous. A marathon, a project, a new adventure, some obscure discovery he’s suddenly fascinated by, all in the same day, apparently. And when something catches his interest, the rest of the world might as well disappear. Sleep, hunger and time are merely suggestions. I always wonder if he’s secretly figured out how to get more than 24 hours out of a day.' },
       { q: 'What happens when something goes wrong?', a: 'Calm as a cucumber. While I’m probably thinking of seventeen different things that could go wrong, he’s somewhere taking his own sweet time, looking at the situation from an entirely different angle. He may move at the pace of a tortoise, but somehow comes up with a perspective I hadn’t considered and eventually gets things sorted. There’s something rather reassuring about that.' },
       { q: 'Marriage advice you will actually follow?', a: 'Take each other’s conversations seriously. Make time for each other, even when life gets busy. Be patient, be kind, and never stop trying to understand the person you’re with. And perhaps the most important thing is to keep working on yourself. The more you grow as a person, the better a partner you can be. We owe each other the best versions of ourselves, not just the convenient ones.' },
       { q: 'A perfect Sunday with him?', a: 'Some good home-cooked food, reading a book together, a really good thriller or detective movie, strong black coffee, and just the two of us. Honestly, I don’t think I’d ever get bored of a day like that. It’s something I’m always going to be grateful for.' },
     ],
     favs: [
-      { icon: 'wrench', label: 'Fixer', fact: 'If something is broken, he is already reaching for it.' },
-      { icon: 'car', label: 'Road trips', fact: 'Thirty-two so far, one occasional wrong turn, and he stays calm every time.' },
-      { icon: 'clock', label: 'Time', fact: 'Up first, out of the door last. “Five minutes,” he says.' },
-      { icon: 'heart', label: 'Gentle', fact: 'Gentle with people, with plans, and with me on a difficult day.' },
-      { icon: 'briefcase', label: 'Hardworking', fact: 'He puts in the hours quietly and never announces it.' },
-      { icon: 'sparkles', label: 'Messy', fact: 'A gentle kind of mess. Everything is about to be tidied. Eventually.' },
-      { icon: 'shield', label: 'Calm', fact: 'Nervous or not, he looks unbothered. It has not failed him yet, or us.' },
+      { icon: 'list-checks', label: 'The Never-Ending To-Do List', fact: 'Relaxation and Prem have a rather complicated relationship. There’s always something to do, something to achieve, or somewhere to explore. He pushes himself so hard that I’m not entirely sure he knows when to stop. Taking a break is apparently a skill he’s still learning.' },
+      { icon: 'wrench', label: 'The Resident Handyman', fact: 'Electrical problems? Plumbing issues? Something around the house refusing to cooperate? No need to panic. I’ve got my man. He’ll investigate, take things apart, figure out what’s wrong and somehow get them working again. Professional assistance is rarely the first resort.' },
+      { icon: 'moon', label: 'After-Hours Operations', fact: 'A proper night owl. Some of his most productive hours happen when the rest of the world has called it a day. When he’s working on something he cares about, he pours his entire soul into it. Unfortunately, this also means his hard work occasionally goes unnoticed because everyone else is fast asleep.' },
+      { icon: 'home', label: 'The Housekeeping Department', fact: 'Can organise an elaborate adventure, manage complicated projects and plan an entire expedition, but putting things back where they belong? That’s apparently asking a little too much. He genuinely doesn’t believe a tidy house adds much value to his productivity. We have agreed to disagree.' },
+      { icon: 'film', label: 'The Unfinished Business', fact: 'He cannot sleep without knowing how a movie ends, even if it’s the most boring film ever made. And it’s not just movies. He needs to know the why behind everything. A simple answer is rarely enough, and Google has probably been kept busy on his account.' },
+      { icon: 'door-open', label: 'The Permanent Yes-Man', fact: 'New place? New food? Some obscure adventure? Something neither of us has tried before? He’s in. Doesn’t matter what time it is, where we’re going or who’s coming along. If there’s a new experience to be had, Prem is probably already halfway out the door.' },
+      { icon: 'headphones', label: 'The Selective Listener', fact: 'For someone who’s interested in almost everything, he’s surprisingly particular about where he spends his energy. If something doesn’t have a purpose or meaning to him, it might as well not have been said. Getting his attention is easy; convincing him something is worth his time is another matter.' },
+      { icon: 'heart', label: 'The Unpolished Gentleman', fact: 'Underneath all that adventure, ambition and endless curiosity is an incredibly soft-hearted man. He values the raw, real moments of life over anything polished for appearances. He’s thoughtful, empathetic and comfortable being himself. A man with his own idea of what being a man means, and honestly, I wouldn’t have it any other way.' },
     ],
     review: { eyebrow: 'Prem’s rating, written by Nivi', note: 'Appeals are pending.' },
     friends: [
@@ -116,10 +119,10 @@ export default {
     ],
     mentions: ['Adventurous', 'Calm', 'Problem-solver', 'Restless'],
     stripTitle: ['Prem, in', 'frames'],
-    strip: ['The office, June 2022', 'On the road, almost on time', 'Fixing something, again', 'At the wheel, Tamil songs on', 'The day we decided'],
+    strip: ['The office, June 2022', 'On the road, almost on time', 'Fixing something, again', 'At the wheel, Tamil songs on', 'The day we decided', 'Caption to come.', 'Caption to come.', 'Caption to come.', 'Caption to come.', 'Caption to come.', 'Caption to come.'],
     then: {
       title: 'Then & now',
-      a: { year: '2023', label: 'Then', file: 'assets/photos/us/prem-then.jpg' },
+      a: { year: '2022', label: 'Then', file: 'assets/photos/us/prem-then.jpg' },
       b: { year: '2026', label: 'Now', file: 'assets/photos/us/prem-now.jpg' },
     },
   },

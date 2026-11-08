@@ -21,6 +21,10 @@ export function mount(container, ctx) {
 
   let val = {}, wrong = new Set(), reveal = new Set(), sel = -1, dir = 'a', checks = 0, reveals = 0, secs = 0, tick = null, won = false, done = false, started = false, end = null;
   const timers = [];
+  let chosen = [];
+  const pickClues = () => { chosen = entries.map((e) => (e.clues ? e.clues[Math.floor(Math.random() * e.clues.length)] : e.clue)); };
+  const clueOf = (e) => chosen[entries.indexOf(e)];
+  pickClues();
 
   container.innerHTML = `
     <div class="gx gx-cw">
@@ -50,10 +54,6 @@ export function mount(container, ctx) {
           ${KEYS.map((r, n) => `<div class="gx-cw-kr">${[...r].map((k) => `<button type="button" data-k="${k}">${k}</button>`).join('')}${n === 2 ? `<button type="button" data-k="⌫" class="is-wide" aria-label="Backspace">⌫</button>` : ''}</div>`).join('')}
         </div>
         <span class="gx-hint gx-cw-help">${esc(C.hint)}</span>
-        <div class="gx-start gx-cw-start">
-          <p class="gx-intro">${esc(C.intro)}</p>
-          <button class="pl-gbtn gx-cw-go" type="button">${icon('pencil', { size: 16, stroke: 2 })}<span>Begin</span></button>
-        </div>
       </div>
     </div>`;
   const $ = (s) => container.querySelector(s);
@@ -64,9 +64,11 @@ export function mount(container, ctx) {
   board.innerHTML = Array.from({ length: W * H }, (_, i) => open(i)
     ? `<i class="gx-cw-c" data-i="${i}">${numAt[i] ? `<sup>${numAt[i]}</sup>` : ''}<b></b></i>` : '<i class="gx-cw-c is-black"></i>').join('');
   const cellEls = [...board.children];
-  ['a', 'd'].forEach((d) => {
-    $(`.gx-cw-list[data-d="${d}"] ol`).innerHTML = ordered.filter((k) => entries[k].d === d).map((k) => `<li data-k="${k}"><span>${entries[k].n}</span>${esc(entries[k].clue)}</li>`).join('');
+  const buildLists = () => ['a', 'd'].forEach((d) => {
+    $(`.gx-cw-list[data-d="${d}"] ol`).innerHTML = ordered.filter((k) => entries[k].d === d).map((k) => `<li data-k="${k}"><span>${entries[k].n}</span>${esc(clueOf(entries[k]))}</li>`).join('');
   });
+  buildLists();
+  board.style.setProperty('--n', W);
   const liEl = (k) => container.querySelector(`.gx-cw-list li[data-k="${k}"]`);
 
   // ----- helpers
@@ -82,7 +84,7 @@ export function mount(container, ctx) {
       el.classList.toggle('is-act', cells.has(i)); el.classList.toggle('is-sel', i === sel);
       el.classList.toggle('is-wrong', wrong.has(i)); el.classList.toggle('is-rev', reveal.has(i));
     });
-    if (e) { clueB.textContent = `${e.n} ${e.d === 'a' ? 'Across' : 'Down'}`; clueS.textContent = e.clue; }
+    if (e) { clueB.textContent = `${e.n} ${e.d === 'a' ? 'Across' : 'Down'}`; clueS.textContent = clueOf(e); }
     let n = 0; entries.forEach((en, k) => { const ok = complete(en); if (ok) n++; const li = liEl(k); li.classList.toggle('is-ok', ok); li.classList.toggle('is-now', en === e); });
     $('.gx-score').textContent = `${n}/${entries.length}`;
     return n;
@@ -124,7 +126,7 @@ export function mount(container, ctx) {
   }
 
   function begin() {
-    started = true; $('.gx-cw-start').hidden = true; val = {}; wrong = new Set(); reveal = new Set(); checks = reveals = secs = 0; won = done = false;
+    started = true; pickClues(); buildLists(); val = {}; wrong = new Set(); reveal = new Set(); checks = reveals = secs = 0; won = done = false;
     if (end) { end.stop(); end.node.remove(); end = null; }
     body.hidden = false; $('.gx-cw-time').textContent = '0:00'; selectEntry(ordered[0], false);
     clearInterval(tick); tick = setInterval(() => { secs++; $('.gx-cw-time').textContent = mmss(secs); }, 1000);
@@ -150,10 +152,9 @@ export function mount(container, ctx) {
   // ----- input
   board.addEventListener('click', (e) => { const el = e.target.closest('.gx-cw-c'); if (el && el.dataset.i != null && started && !done) select(+el.dataset.i); });
   container.querySelectorAll('.gx-cw-nav').forEach((b) => b.addEventListener('click', () => started && !done && nav(+b.dataset.n)));
-  container.querySelectorAll('.gx-cw-list li').forEach((li) => li.addEventListener('click', () => started && !done && selectEntry(+li.dataset.k)));
+  container.querySelector('.gx-cw-side').addEventListener('click', (e) => { const li = e.target.closest('li[data-k]'); if (li && started && !done) selectEntry(+li.dataset.k); });
   container.querySelectorAll('.gx-cw-kb button').forEach((b) => b.addEventListener('click', () => (b.dataset.k === '⌫' ? back() : type(b.dataset.k))));
   $('.gx-cw-check').addEventListener('click', check); $('.gx-cw-rev').addEventListener('click', revealWord);
-  $('.gx-cw-go').addEventListener('click', () => { sound.play('pop', { volume: .6 }); begin(); });
   const onKey = (e) => {
     if (!started || done || e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.target.closest && e.target.closest('.sheet__close')) return;
@@ -169,8 +170,7 @@ export function mount(container, ctx) {
     }
   };
   document.addEventListener('keydown', onKey);
-  // show the (empty) grid behind the intro
-  cellEls.forEach((el) => { if (el.dataset.i != null) el.querySelector('b').textContent = ''; });
+  begin();
 
   return () => { document.removeEventListener('keydown', onKey); clearInterval(tick); timers.forEach(clearTimeout); if (end) end.stop(); };
 }

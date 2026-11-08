@@ -81,3 +81,16 @@
 
 .gm-likely-hint.is-hit { color: var(--gold-300); }
 .gm-likely-reveal { min-height: 28px; }
+
+/* four-way choice: Nivi / Prem are the big cards, Both / Neither the slim row beneath */
+.gm-likely-pick--c { padding: 14px 10px; border-radius: 18px; border-color: rgba(227, 194, 110, .45); }
+.gm-likely-pick--c .gm-likely-pick__name { gap: 8px; }
+.gm-likely-pick__name svg { color: var(--gold-300); }
+.gm-likely-pick.is-truth { z-index: 1; }
+.gm-likely-hint.is-miss { color: var(--fg-2); }
+.gm-likely-hint { min-height: 1.2em; }
+.gm-likely-swipe { cursor: grab; touch-action: none; }
+.gm-likely-stamp { position: absolute; top: 34px; left: 50%; z-index: 2; padding: 4px 14px; border: 2.5px solid #8A6420; border-radius: 10px; color: #8A6420; font: 700 .95rem var(--f-ui); letter-spacing: .12em; text-transform: uppercase; opacity: 0; pointer-events: none; transform: translateX(-50%) rotate(-8deg); }
+.gm-likely-stamp[data-k='a'] { left: auto; right: 22px; transform: rotate(10deg); }
+.gm-likely-stamp[data-k='b'] { left: 22px; transform: rotate(-10deg); }
+.gm-likely-stamp[data-k='neither'] { top: auto; bottom: 30px; }

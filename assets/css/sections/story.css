@@ -161,3 +161,20 @@ img.st-open__orb { background: none; box-shadow: none; filter: none; border-radi
 .st-end__h { color: #FBF6EA; text-shadow: 0 2px 24px rgba(0, 0, 0, .55); }
 .st-end__sub { color: #F4ECD8; font-size: clamp(1.1rem, 1.5vw, 1.35rem); line-height: 1.55; text-shadow: 0 1px 14px rgba(0, 0, 0, .6); }
 .st-end__sub strong { font-weight: 700; color: #FFF; }
+
+/* story card, desktop: photo on the left, copy on the right */
+@media (min-width: 861px) {
+  .st-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+  .st-photos { order: -1; }
+}
+
+.st-rail__btns { align-items: center; }
+.st-mem__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; } .st-mem__top .st-sec-head { margin-bottom: clamp(24px, calc(5 * var(--vh1)), 56px); }
+.st-mem__top { align-items: flex-end; flex-wrap: wrap; row-gap: 0; }
+.st-mem__top .st-sec-head { flex: 1 1 420px; }
+/* memory rail head: eyebrow / title / sub on the left */
+.st-mem__top { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 20px; align-items: center; margin-bottom: clamp(24px, calc(5 * var(--vh1)), 56px); }
+.st-mem__top .eyebrow { grid-column: 1 / -1; margin: 0 0 14px; }
+.st-mem__top .st-h2 { grid-column: 1 / -1; margin: 0 0 clamp(20px, 3vw, 36px); }
+.st-mem__top .st-sub { grid-column: 1; margin: 0; max-width: 760px; }
+@media (max-width: 640px) { .st-mem__top { grid-template-columns: 1fr; row-gap: 20px; } .st-mem__top .st-sub { grid-column: 1; } }
