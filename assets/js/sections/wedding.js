@@ -379,7 +379,8 @@ export function mount(el, ctx) {
   function initSun(api) {
     const root = api.body.querySelector('.wd-sun');
     if (!root) return null;
-    const [LO, HI] = C.sun?.domain || [5.5, 23.5];
+    const [FLO, FHI] = C.sun?.domain || [5.5, 23.5];
+    let LO = FLO, HI = FHI;
     const arena = root.querySelector('[data-arena]'), svg = root.querySelector('.wd-sun__svg'), orb = root.querySelector('[data-orb]');
     const markersEl = root.querySelector('[data-markers]'), ticksEl = root.querySelector('[data-ticks]'), evBox = root.querySelector('[data-ev]');
     const range = root.querySelector('[data-range]'), clockEl = root.querySelector('[data-clock]'), apEl = root.querySelector('[data-ampm]'), phaseEl = root.querySelector('[data-phase]');
@@ -398,7 +399,20 @@ export function mount(el, ctx) {
     arc.setAttribute('class', 'wd-sun__arc'); trail.setAttribute('class', 'wd-sun__trail');
     svg.append(arc, trail);
 
+    /* phones: zoom the day to where its events are, so the markers have room instead of sharing a squeezed 18-hour arc */
+    const slideEnds = root.querySelectorAll('.wd-sun__slide > span');
+    function setDomain() {
+      const hs = dayEvents().map((e) => hoursOf(e.start));
+      if (arena.getBoundingClientRect().width < 620 && hs.length) {
+        LO = Math.max(FLO, Math.floor(Math.min(...hs) - 1.5)); HI = Math.min(FHI, Math.ceil(Math.max(...hs) + 1.5));
+        if (HI - LO < 6) { LO = Math.max(FLO, LO - 1); HI = Math.min(FHI, HI + 1); }
+      } else { LO = FLO; HI = FHI; }
+      range.min = LO; range.max = HI;
+      if (slideEnds.length > 1) { slideEnds[0].textContent = clock12(LO); slideEnds[slideEnds.length - 1].textContent = clock12(HI); }
+    }
+
     function layout() {
+      setDomain();
       const r = arena.getBoundingClientRect();
       geo = { W: r.width, H: r.height, px: Math.max(40, r.width * .06), y0: r.height * .84, y1: r.height * .1 };
       svg.setAttribute('viewBox', `0 0 ${geo.W} ${geo.H}`);
@@ -408,7 +422,8 @@ export function mount(el, ctx) {
       trailLen = trail.getTotalLength();
       trail.style.strokeDasharray = `${trailLen}`;
       // hour ticks
-      ticksEl.innerHTML = [6, 9, 12, 15, 18, 21].map((h) => `<span style="left:${xOf(h).toFixed(1)}px">${h % 12 || 12}<small>${h >= 12 ? 'PM' : 'AM'}</small></span>`).join('');
+      const tk = HI - LO > 12 ? 3 : 2, tkHours = []; for (let h = Math.ceil(LO / tk) * tk; h <= HI; h += tk) tkHours.push(h);
+      ticksEl.innerHTML = tkHours.map((h) => `<span style="left:${xOf(h).toFixed(1)}px">${h % 12 || 12}<small>${h >= 12 ? 'PM' : 'AM'}</small></span>`).join('');
       placeMarkers();
       render(t, true);
     }
@@ -525,7 +540,7 @@ export function mount(el, ctx) {
       if (b.dataset.day === day) return;
       day = b.dataset.day; shownId = '';
       root.querySelectorAll('[data-day]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-      placeMarkers();
+      layout();
       const f = dayEvents()[0];
       if (f) tweenTo(hoursOf(f.start), 1100);
       try { sound.play('whoosh'); } catch { /* ok */ }
