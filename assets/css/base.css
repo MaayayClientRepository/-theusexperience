@@ -440,3 +440,9 @@ html.at-end .dock { opacity: 0; pointer-events: none; transform: translate(-50%,
 
 /* Mobile design stage is 390×844 (the shell in index.html scales it to the real screen). */
 @media (max-width: 699px) { :root { --vh1: 8.44px; } }
+
+/* phones: a section header may never push its action chip/button past the screen edge */
+@media (max-width: 700px) {
+  .screen__head { flex-wrap: wrap !important; }
+  .screen__head > * { min-width: 0; max-width: 100%; }
+}

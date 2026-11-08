@@ -35,15 +35,16 @@
   #story .st-stage { grid-template-rows: minmax(0, 1fr); }
   .st-card { grid-template-rows: minmax(0, 1fr) auto; height: 100%; max-height: calc(100svh - var(--top) - var(--bottom)); padding: clamp(14px, 4vw, 24px); gap: clamp(8px, calc(1.6 * var(--vh1)), 16px); overflow: hidden; }
   .st-main { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: clamp(8px, calc(1.6 * var(--vh1)), 16px); }
-  .st-title { font-size: clamp(3rem, min(22vw, calc(11 * var(--vh1))), 7rem); }
+  .st-title { font-size: clamp(2.4rem, min(16vw, calc(8 * var(--vh1))), 5rem); }
   .st-text { font-size: clamp(.88rem, calc(1.9 * var(--vh1)), 1.05rem); line-height: 1.4; }
-  .st-photos { min-height: 0; }
+  .st-photos { min-height: clamp(150px, 24svh, 240px); }   /* never let the photo get squashed into a thin strip */
+  .st-photo { min-height: inherit; } .st-photo img { object-fit: cover; object-position: center 30%; }
   .st-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); padding-right: 0; padding-bottom: 0; gap: 6px; }
   .st-stat { padding: 8px 8px; }
   .st-stat b { font-size: clamp(1.2rem, 5.4vw, 1.8rem); }
   .st-stat span { font-size: .52rem; letter-spacing: .08em; }
 }
-@media (max-width: 860px) and (max-height: 640px) { .st-text { display: none; } }
+@media (max-width: 860px) and (max-height: 760px) { .st-text { display: none; } }
 @media (max-height: 640px) and (min-width: 861px) { .st-text { display: none; } }
 
 /* ================= sheet ================= */
@@ -62,7 +63,7 @@
 .st-open.is-in .st-line > span { transform: none; }
 .st-open__sub { position: relative; max-width: 48ch; font-size: var(--fs-lead); color: var(--fg-2); line-height: 1.5; margin: 0; }
 .st-scrollhint { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-mono); font-size: var(--fs-label); letter-spacing: .2em; text-transform: uppercase; color: var(--accent-text); margin: 0; }
-.st-scrollhint svg { animation: st-bob 2.2s var(--ease-io) infinite; } @keyframes st-bob { 50% { transform: translateY(5px); } }
+.st-scrollhint svg { animation: st-hint-bob 2.2s var(--ease-io) infinite; } @keyframes st-hint-bob { 50% { transform: translateY(5px); } }
 
 
 
@@ -178,3 +179,10 @@ img.st-open__orb { background: none; box-shadow: none; filter: none; border-radi
 .st-mem__top .st-h2 { grid-column: 1 / -1; margin: 0 0 clamp(20px, 3vw, 36px); }
 .st-mem__top .st-sub { grid-column: 1; margin: 0; max-width: 760px; }
 @media (max-width: 640px) { .st-mem__top { grid-template-columns: 1fr; row-gap: 20px; } .st-mem__top .st-sub { grid-column: 1; } }
+
+/* phones: the moon sits in the flow above the text, never behind it */
+@media (max-width: 700px) {
+  .st-open { align-content: start; padding-top: 8px; }
+  .st-open > .eyebrow { order: -2; }
+  img.st-open__orb { position: relative; order: -1; top: auto; right: auto; justify-self: center; width: min(78vw, 340px); margin: 4px 0 8px; }
+}

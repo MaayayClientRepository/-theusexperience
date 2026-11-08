@@ -125,9 +125,14 @@ function buildSheet(p, k, c) {
 
   <section class="us-sec us-strip" aria-label="${L.strip}">
     <div class="us-head us-head--g rv"><p class="eyebrow">05 · ${L.strip}</p><h3 class="us-h2">${raw(p.stripTitle ? `${esc(p.stripTitle[0])} <em class="gold">${esc(p.stripTitle[1])}</em>` : her ? 'Her <em class="gold">pictures</em>' : 'His <em class="gold">pictures</em>')}</h3></div>
+    <div class="us-strip__wrap">
     <div class="us-strip__row">
       ${p.strip.map((s, i) => html`<figure class="us-strip__it rv" style="--d:${i * .06}s"><div>${raw(ph({ label: s, file: `assets/photos/us/${p.name.toLowerCase()}-${i + 1}.jpg`, ratio: null }))}</div></figure>`)}
     </div>
+      <button class="us-strip__nav us-strip__nav--prev" type="button" data-dir="-1" aria-label="Previous photos" hidden>${raw(icon('chevron-left', { size: 22, stroke: 2.2 }))}</button>
+      <button class="us-strip__nav us-strip__nav--next" type="button" data-dir="1" aria-label="More photos">${raw(icon('chevron-right', { size: 22, stroke: 2.2 }))}</button>
+    </div>
+    <p class="us-strip__hint" aria-hidden="true">${raw(icon('chevron-left', { size: 12, stroke: 2 }))} Swipe ${raw(icon('chevron-right', { size: 12, stroke: 2 }))}</p>
   </section>
 
   <section class="us-end">
@@ -238,8 +243,25 @@ function wire(api, root, p, k) {
   }));
   root.querySelector('[data-close]').addEventListener('click', () => api.close());
 
+  try { stripWire(root); } catch (e) { console.error('[us] strip', e); }
   try { thenNowWire(root, p); } catch (e) { console.error('[us] then & now', e); }
   try { orbitWire(root, p, sc); } catch (e) { console.error('[us] orbit', e); }
+}
+
+function stripWire(root) {
+  const row = root.querySelector('.us-strip__row'), wrap = row.parentElement;
+  const prev = wrap.querySelector('[data-dir="-1"]'), next = wrap.querySelector('[data-dir="1"]');
+  const hint = root.querySelector('.us-strip__hint');
+  const sync = () => {
+    const max = row.scrollWidth - row.clientWidth, x = row.scrollLeft;
+    prev.hidden = x < 8; next.hidden = x > max - 8;
+    wrap.classList.toggle('is-start', x < 8); wrap.classList.toggle('is-end', x > max - 8);
+    if (x > 24 && hint) hint.hidden = true;
+  };
+  [prev, next].forEach((b) => b.addEventListener('click', () => row.scrollBy({ left: Number(b.dataset.dir) * row.clientWidth * .8, behavior: 'smooth' })));
+  row.addEventListener('scroll', sync, { passive: true });
+  addEventListener('resize', sync);
+  sync(); setTimeout(sync, 400);
 }
 
 function orbitWire(root, p, sc) {
@@ -301,7 +323,10 @@ function orbitWire(root, p, sc) {
     if (!drag) return; vel = moved ? clamp(drag.v, -0.006, 0.006) : 0; drag = null; stage.classList.remove('is-drag'); kick();
   };
   stage.addEventListener('pointerup', end); stage.addEventListener('pointercancel', end);
-  moons.forEach((m, i) => m.addEventListener('click', () => { if (moved) { moved = false; return; } choose(i); }));
+  moons.forEach((m, i) => m.addEventListener('click', () => { if (moved) { moved = false; return; } choose(i);
+    // stacked (phone) layout: the explanation sits below the orbit, so bring it into view
+    if (window.matchMedia('(max-width: 900px)').matches) card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+  }));
   card.querySelectorAll('[data-step]').forEach((b) => b.addEventListener('click', () => choose(sel + Number(b.dataset.step))));
   stage.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') { e.preventDefault(); choose(sel + 1); } else if (e.key === 'ArrowLeft') { e.preventDefault(); choose(sel - 1); } });
 
@@ -310,7 +335,7 @@ function orbitWire(root, p, sc) {
 
 function thenNowWire(root, p) {
   const box = root.querySelector('.us-tn'), knob = root.querySelector('.us-tn__knob');
-  let v = 50, drag = false;
+  let v = 50, drag = false, hover = false;
   const set = (n) => {
     v = clamp(n, 0, 100); box.style.setProperty('--x', v + '%');
     knob.setAttribute('aria-valuenow', Math.round(v));
@@ -318,8 +343,11 @@ function thenNowWire(root, p) {
   };
   const fromEvent = (e) => { const r = box.getBoundingClientRect(); set(((e.clientX - r.left) / r.width) * 100); };
   box.addEventListener('pointerdown', (e) => { drag = true; box.setPointerCapture(e.pointerId); box.classList.add('is-drag'); fromEvent(e); });
-  box.addEventListener('pointermove', (e) => { if (drag) fromEvent(e); });
-  const end = () => { drag = false; box.classList.remove('is-drag'); };
+  // mouse: the line follows the cursor on hover, no click needed; touch/pen still drag
+  box.addEventListener('pointermove', (e) => { if (drag || e.pointerType === 'mouse') { hover = e.pointerType === 'mouse'; fromEvent(e); } });
+  box.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { hover = true; box.classList.add('is-drag'); } });
+  box.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { hover = false; if (!drag) box.classList.remove('is-drag'); } });
+  const end = () => { drag = false; if (!hover) box.classList.remove('is-drag'); };
   box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
   knob.addEventListener('keydown', (e) => {
     const m = { ArrowLeft: -4, ArrowDown: -4, ArrowRight: 4, ArrowUp: 4, PageDown: -15, PageUp: 15 }[e.key];
@@ -327,5 +355,5 @@ function thenNowWire(root, p) {
   });
   set(50);
   // gentle intro sweep
-  if (!prefersReducedMotion()) { let t0 = 0; const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { io.disconnect(); const a = performance.now(); (function f(n) { const k = clamp((n - a) / 1400, 0, 1); if (!drag) set(50 + Math.sin(k * Math.PI * 2) * 18 * (1 - k)); if (k < 1 && !drag) requestAnimationFrame(f); })(a); } }, { root: root.closest('.sheet__scroll'), threshold: .5 }); io.observe(box); void t0; }
+  if (!prefersReducedMotion()) { let t0 = 0; const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { io.disconnect(); const a = performance.now(); (function f(n) { const k = clamp((n - a) / 1400, 0, 1); if (!drag && !hover) set(50 + Math.sin(k * Math.PI * 2) * 18 * (1 - k)); if (k < 1 && !drag && !hover) requestAnimationFrame(f); })(a); } }, { root: root.closest('.sheet__scroll'), threshold: .5 }); io.observe(box); void t0; }
 }

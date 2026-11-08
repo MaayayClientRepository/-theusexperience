@@ -182,3 +182,6 @@
   .gx-fib-scope svg { animation: none; }
 }
 
+
+/* phones: keep the clue arrows round and tappable instead of squeezed by the clue text */
+.gx-cw-nav { flex: none; min-width: 40px; }

@@ -94,3 +94,31 @@
 .gm-likely-stamp[data-k='a'] { left: auto; right: 22px; transform: rotate(10deg); }
 .gm-likely-stamp[data-k='b'] { left: 22px; transform: rotate(-10deg); }
 .gm-likely-stamp[data-k='neither'] { top: auto; bottom: 30px; }
+
+/* arena: Nivi and Prem flank the question card, so it reads as "drag me toward one of them" */
+.gm-likely-arena { display: grid; grid-template-columns: minmax(96px, 150px) minmax(0, 440px) minmax(96px, 150px); align-items: center; justify-content: center; gap: clamp(24px, 2.6vw, 36px); width: 100%; }
+.gm-likely-arena .gm-likely-deck { width: 100%; }
+.gm-likely-arena .gm-likely-pick { padding: 8px 6px 12px; }
+.gm-likely-arena .gm-likely-pick__face { height: clamp(70px, calc(12 * var(--vh1)), 104px); }
+.gm-likely-arena .gm-likely-pick--a::after, .gm-likely-arena .gm-likely-pick--b::after { content: ''; position: absolute; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-top: 2.5px solid var(--gold-300); border-right: 2.5px solid var(--gold-300); opacity: .8; animation: gm-likely-nudge 1.6s ease-in-out infinite; pointer-events: none; }
+.gm-likely-arena .gm-likely-pick--a::after { right: -17px; transform: rotate(-135deg); animation-name: gm-likely-nudge-l; }
+.gm-likely-arena .gm-likely-pick--b::after { left: -17px; transform: rotate(45deg); }
+.gm-likely-pick.is-aim:not(:disabled) { transform: scale(1.06); box-shadow: 0 0 0 4px rgba(255, 248, 226, .55), 0 0 36px 6px rgba(239, 214, 140, .45); }
+.gm-likely-pick.is-shake { animation: gm-likely-shake .5s cubic-bezier(.36, .07, .19, .97) both; }
+.gm-likely-swipe.is-sway { animation: gm-likely-sway 1.4s var(--ease) 1; }
+@keyframes gm-likely-shake { 10%, 90% { transform: translateX(-2px); } 20%, 80% { transform: translateX(5px); } 30%, 50%, 70% { transform: translateX(-9px); } 40%, 60% { transform: translateX(9px); } }
+@keyframes gm-likely-sway { 0%, 100% { transform: none; } 22% { transform: translateX(-26px) rotate(-3deg); } 55% { transform: translateX(26px) rotate(3deg); } 80% { transform: translateX(-8px) rotate(-1deg); } }
+@keyframes gm-likely-nudge { 0%, 100% { translate: 0 0; } 50% { translate: 5px 0; } }
+@keyframes gm-likely-nudge-l { 0%, 100% { translate: 0 0; } 50% { translate: -5px 0; } }
+.gm-likely-choices { grid-template-columns: 1fr 1fr; width: min(92vw, 440px); margin-top: 0; }
+@media (max-width: 640px) {
+  .gm-likely-arena { grid-template-columns: 72px minmax(0, 1fr) 72px; gap: 8px; }
+  .gm-likely-arena .gm-likely-deck { aspect-ratio: auto; height: clamp(230px, 38svh, 320px); max-height: none; }
+  .gm-likely-arena .gm-likely-pick { padding: 6px 2px 8px; border-radius: 18px; gap: 4px; }
+  .gm-likely-arena .gm-likely-pick__face { height: 62px; } .gm-likely-arena .gm-likely-pick__face svg { width: 84px; }
+  .gm-likely-arena .gm-likely-pick__name { font-size: .82rem; }
+  .gm-likely-arena .gm-likely-pick--a::after, .gm-likely-arena .gm-likely-pick--b::after { display: none; }
+  .gm-likely-arena .gm-likely-q { font-size: clamp(1.25rem, 5.6vw, 1.7rem); }
+  .gm-likely-arena .gm-likely-swipe { padding: 18px 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .gm-likely-pick.is-shake, .gm-likely-swipe.is-sway, .gm-likely-arena .gm-likely-pick::after { animation: none; } }

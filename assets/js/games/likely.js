@@ -12,6 +12,12 @@ export function mount(container, ctx) {
   let i = 0, score = 0, locked = false, done = false, timers = [];
   const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
 
+  const pickBtn = (k) => html`
+    <button class="gm-likely-pick gm-likely-pick--${k}" type="button" data-k="${k}" aria-label="${names[k]}">
+      <span class="gm-likely-pick__face">${raw(characters[k === 'a' ? 'bride' : 'groom']({ pose: 'stand', mood: k === 'a' ? 'love' : 'smile' }))}</span>
+      <span class="gm-likely-pick__name"><span>${names[k]}</span></span>
+    </button>`;
+
   container.innerHTML = String(html`
     <div class="gm-likely">
       <div class="pl-gh">
@@ -21,19 +27,18 @@ export function mount(container, ctx) {
       </div>
       <div class="gm-likely-play">
         <div class="pl-dots gm-likely-dots">${raw(prompts.map(() => '<i></i>').join(''))}</div>
-        <div class="gm-likely-deck">
-          <div class="gm-likely-swipe" tabindex="0" aria-label="Question card. Swipe left for ${names.a}, right for ${names.b}, up for both, down for neither.">
-            <span class="gm-likely-stamp" aria-hidden="true"></span>
-            <span class="gm-likely-count"></span>
-            <h3 class="gm-likely-q" aria-live="polite"></h3>
+        <div class="gm-likely-arena">
+          ${pickBtn('a')}
+          <div class="gm-likely-deck">
+            <div class="gm-likely-swipe" tabindex="0" aria-label="Question card. Swipe left for ${names.a}, right for ${names.b}, up for both, down for neither.">
+              <span class="gm-likely-stamp" aria-hidden="true"></span>
+              <span class="gm-likely-count"></span>
+              <h3 class="gm-likely-q" aria-live="polite"></h3>
+            </div>
           </div>
+          ${pickBtn('b')}
         </div>
-        <div class="gm-likely-choices" role="group" aria-label="Choose one">
-          ${['a', 'b'].map((k, n) => html`
-            <button class="gm-likely-pick gm-likely-pick--${k}" type="button" data-k="${k}" aria-label="${names[k]}">
-              <span class="gm-likely-pick__face">${raw(characters[k === 'a' ? 'bride' : 'groom']({ pose: 'stand', mood: k === 'a' ? 'love' : 'smile' }))}</span>
-              <span class="gm-likely-pick__name"><span>${names[k]}</span></span>
-            </button>`)}
+        <div class="gm-likely-choices" role="group" aria-label="Both or neither">
           ${[['both', 'Both', 'heart'], ['neither', 'Neither', 'x']].map(([k, label, ic]) => html`
             <button class="gm-likely-pick gm-likely-pick--c gm-likely-pick--${k}" type="button" data-k="${k}" aria-label="${label}">
               <span class="gm-likely-pick__name">${raw(icon(ic, { size: 18, stroke: 2 }))}<span>${label}</span></span>
@@ -61,7 +66,7 @@ export function mount(container, ctx) {
     nEl.textContent = `${i + 1} / ${N}`;
     dots.forEach((d, n) => { d.className = n < i ? 'is-done' : n === i ? 'is-now' : ''; });
     hint.className = 'gm-likely-hint'; hint.textContent = HINT;
-    Object.values(orbEls).forEach((o) => { o.className = o.className.replace(/\bis-(picked|truth|dim|match|miss)\b/g, '').trim(); o.disabled = false; });
+    Object.values(orbEls).forEach((o) => { o.className = o.className.replace(/\bis-(picked|truth|dim|match|miss|aim|shake)\b/g, '').trim(); o.disabled = false; });
     container.scrollTop = 0;
   }
 
@@ -90,6 +95,11 @@ export function mount(container, ctx) {
     orbEls[p.truth].classList.remove('is-dim'); orbEls[p.truth].classList.add('is-truth');
     hint.className = `gm-likely-hint is-${hit ? 'hit' : 'miss'}`;
     hint.textContent = hit ? `Match! The couple says ${label(p.truth)}` : `The couple says ${label(p.truth)}`;
+    if (!hit) {
+      // wrong: buzz the phone where supported, and shake the card you picked (iOS and desktop have no vibrate)
+      try { navigator.vibrate && navigator.vibrate([70, 50, 70]); } catch (e) { /* unsupported */ }
+      if (!prefersReducedMotion()) { void orbEls[k].offsetWidth; orbEls[k].classList.add('is-shake'); }
+    }
     if (hit && !prefersReducedMotion()) { const r = orbEls[k].getBoundingClientRect(); orbs.burst(r.left + r.width / 2, r.top + r.height / 2, { count: 22, power: .8 }); }
     later(next, prefersReducedMotion() ? 1500 : 1300);
   }
@@ -143,17 +153,24 @@ export function mount(container, ctx) {
   };
   document.addEventListener('keydown', onKey);
   container.querySelectorAll('.gm-likely-pick').forEach((o) => o.addEventListener('click', () => pick(o.dataset.k)));
-  swipe.addEventListener('animationend', () => swipe.classList.remove('is-in'));
+  let swayed = false;
+  swipe.addEventListener('animationend', (e) => {
+    if (e.animationName === 'gm-likely-sway') { swipe.classList.remove('is-sway'); return; }
+    swipe.classList.remove('is-in');
+    // first card only: a small sideways nudge to say "drag me"
+    if (!swayed && i === 0 && !prefersReducedMotion()) { swayed = true; swipe.classList.add('is-sway'); }
+  });
+  const aim = (k) => KEYS.forEach((x) => orbEls[x].classList.toggle('is-aim', x === k));
   let sx = null, sy = 0;
   const setD = (dx, dy) => {
     swipe.style.transform = `translate(${dx}px, ${dy}px) rotate(${dx / 18}deg)`;
     const d = Math.hypot(dx, dy), k = DIR[dirOf(dx, dy)];
-    stamp.textContent = LABEL[k]; stamp.dataset.k = k; stamp.style.opacity = Math.max(0, Math.min(1, (d - 14) / 70));
+    aim(k); stamp.textContent = LABEL[k]; stamp.dataset.k = k; stamp.style.opacity = Math.max(0, Math.min(1, (d - 14) / 70));
   };
-  swipe.addEventListener('pointerdown', (e) => { if (locked || done) return; sx = e.clientX; sy = e.clientY; swipe.setPointerCapture(e.pointerId); swipe.style.transition = 'none'; swipe.classList.remove('is-in'); swipe.classList.add('is-drag'); });
+  swipe.addEventListener('pointerdown', (e) => { if (locked || done) return; sx = e.clientX; sy = e.clientY; swipe.setPointerCapture(e.pointerId); swipe.style.transition = 'none'; swipe.classList.remove('is-in', 'is-sway'); swipe.classList.add('is-drag'); });
   swipe.addEventListener('pointermove', (e) => { if (sx != null) setD(e.clientX - sx, e.clientY - sy); });
   const release = (e) => {
-    if (sx == null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null; swipe.classList.remove('is-drag');
+    if (sx == null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null; swipe.classList.remove('is-drag'); aim(null);
     if (Math.hypot(dx, dy) > 80) pick(DIR[dirOf(dx, dy)]);
     else { swipe.style.transition = 'transform .4s var(--ease)'; swipe.style.transform = ''; stamp.style.opacity = 0; }
   };

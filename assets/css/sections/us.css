@@ -223,3 +223,20 @@
 .us-hero__rule { display: block; width: clamp(80px, 12vw, 160px); height: 1px; margin: clamp(10px, calc(2 * var(--vh1)), 22px) 0 clamp(4px, 1vh, 10px); background: linear-gradient(90deg, var(--gold-300), transparent); }
 .us-hero__bio { display: flex; align-items: center; margin-top: clamp(6px, 1.4vh, 16px); }
 @media (max-width: 760px) { .us-hero__txt { justify-items: center; text-align: center; } .us-hero__rule { background: linear-gradient(90deg, transparent, var(--gold-300), transparent); } }
+
+/* strip: tell people it scrolls — edge fade, arrow buttons, swipe hint */
+.us-strip__wrap { position: relative; }
+.us-strip__wrap::after { content: ""; position: absolute; top: 0; right: 0; bottom: 8px; width: clamp(48px, 14vw, 120px); pointer-events: none; background: linear-gradient(90deg, transparent, var(--us-fade, rgba(10, 9, 7, .85))); transition: opacity .25s; }
+.us-strip__wrap.is-end::after { opacity: 0; }
+.us-strip__nav { position: absolute; top: 50%; z-index: 2; width: 44px; height: 44px; margin-top: -26px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .5); display: grid; place-items: center; cursor: pointer; color: #1a1305; background: linear-gradient(135deg, #F6E6B4, #CBA24A); box-shadow: 0 6px 20px rgba(0, 0, 0, .45); }
+.us-strip__nav[hidden] { display: none; }
+.us-strip__nav--next { right: 10px; animation: us-nudge 1.6s ease-in-out 1.2s 4; }
+.us-strip__nav--prev { left: 10px; }
+.us-strip__nav:active { transform: scale(.94); }
+.us-strip__hint { margin: 10px 0 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--fg-3); }
+.us-strip__hint[hidden] { display: none; }
+@keyframes us-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+@media (prefers-reduced-motion: reduce) { .us-strip__nav--next { animation: none; } }
+@media (max-width: 700px) { .us-tn__tag, .us-fcard__why, .us-strip__hint { font-size: .72rem; } }
+/* strip: sideways only. The row never scrolls up/down on its own, a vertical swipe on it scrolls the sheet instead */
+.us-strip__row { overflow-y: hidden; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }

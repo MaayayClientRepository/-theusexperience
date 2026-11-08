@@ -217,11 +217,9 @@ function wire(api, root, s) {
     // control points of the whole journey: tail → [entry, card centre (hidden behind the card), exit] → wandering waypoints → next card …
     const ctrl = [], kind = [];
     const push = (p, k) => { ctrl.push([p[0], p[1]]); kind.push(k); };
-    const e0 = cards[0].in;
-    push([e0.x + (narrow ? 50 : 110), e0.y - (narrow ? 100 : 130)]); push([e0.x + (narrow ? 30 : 50), e0.y - 80]);
     const segAt = [];
     cards.forEach((c, i) => {
-      push([c.in.x + c.in.dx * 46, c.in.y + c.in.dy * 46]); push([c.in.x, c.in.y], 'entry'); push([c.cx, c.cy], 'card');
+      if (i) { push([c.in.x + c.in.dx * 46, c.in.y + c.in.dy * 46]); push([c.in.x, c.in.y], 'entry'); push([c.cx, c.cy], 'card'); }   // the line starts AFTER the first card
       if (!c.out) return;
       push([c.out.x, c.out.y], 'exit'); push([c.out.x + c.out.dx * 46, c.out.y + c.out.dy * 46]);
       const n = cards[i + 1]; if (!n) return;
@@ -334,7 +332,7 @@ function wire(api, root, s) {
     if (sc.scrollLeft) sc.scrollLeft = 0;
     drawLine();
     const y = sc.scrollTop;
-    if (y < innerHeight * 1.2 && !reduce) { oOrb.style.transform = `translate3d(0,${y * .28}px,0) scale(${1 + y / 2200})`; oH.style.transform = `translate3d(0,${y * -.1}px,0)`; open.style.setProperty('--o', clamp(1 - y / (innerHeight * .9), 0, 1)); }
+    if (y < innerHeight * 1.2 && !reduce) { if (innerWidth > 700) { oOrb.style.transform = `translate3d(0,${y * .28}px,0) scale(${1 + y / 2200})`; oH.style.transform = `translate3d(0,${y * -.1}px,0)`; } /* phones: the moon sits above the text, so no parallax that would slide it over the words */ open.style.setProperty('--o', clamp(1 - y / (innerHeight * .9), 0, 1)); }
   }
   sc.addEventListener('scroll', onScroll, { passive: true }); onScroll();
   window.addEventListener('resize', drawLine);

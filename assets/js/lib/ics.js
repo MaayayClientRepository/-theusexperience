@@ -63,7 +63,6 @@ export function eventDetails(ev) {
   const blocks = [];
   const lead = [ev.subtitle ? `${String(ev.subtitle).replace(/[.\s]+$/, '')}.` : '', ev.blurb || ''].filter(Boolean).join(' ');
   if (lead) blocks.push(lead);
-  if (ev.dress) blocks.push(`Dress code: ${ev.dress}`);
   if (site.wedding?.venue?.mapsUrl) blocks.push(`Map: ${site.wedding.venue.mapsUrl}`);
   if (site.siteUrl) blocks.push(`Details & RSVP: ${site.siteUrl}`);
   return blocks.join('\n\n');

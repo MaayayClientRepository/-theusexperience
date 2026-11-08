@@ -25,7 +25,7 @@
     (function () {
       var d = document.documentElement, skip = false;
       d.classList.remove('no-js'); d.classList.add('js');
-      try { skip = /[?&]skipdoor=1/.test(location.search) || sessionStorage.getItem('kalyanam:doorSeen') === 'true'; } catch (e) {}
+      try { skip = /[?&]skipdoor=1/.test(location.search) || /^#.+/.test(location.hash) || sessionStorage.getItem('kalyanam:doorSeen') === 'true'; } catch (e) {}
       if (skip) d.classList.remove('is-door');
     })();
   </script>

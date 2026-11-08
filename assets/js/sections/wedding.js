@@ -183,9 +183,9 @@ export function mount(el, ctx) {
         <h2 class="wd-sheet__num"><span class="gold">${mDay}</span> <em>${mMon}</em></h2>
         <p class="wd-sheet__sub">${mWeek}, ${formatTime(target, tz)}. ${(W.dateLabel || '')} in ${(W.city || '')}.</p>
         ${raw(countHTML('wd-count--big'))}
+        ${C.dateNote ? html`<p class="wd-datenote">${C.dateNote}</p>` : ''}
       </div>
-      <div class="wd-days">${dayBlocks}</div>
-      ${C.dateNote ? html`<p class="wd-datenote">${C.dateNote}</p>` : ''}`);
+      <div class="wd-days">${dayBlocks}</div>`);
     return node;
   }
   function heroSheetLive(api) {
@@ -446,7 +446,7 @@ export function mount(el, ctx) {
         <div class="wd-ev__main">
           <span class="wd-lab">${dayOf(e.day).label} · ${evRange(e)} · ${idx + 1}/${n}</span>
           <h3>${e.name}${e.subtitle ? html` <em>${e.subtitle}</em>` : ''}</h3>
-          <p class="wd-ev__meta"><span>${raw(icon('map-pin', { size: 14 }))} ${e.place}, ${W.city || 'Karur'}</span><span><i class="wd-ev__sw" style="--a:${s[0]};--b:${s[1]}"></i> ${e.dress}</span></p>
+          <p class="wd-ev__meta"><span>${raw(icon('map-pin', { size: 14 }))} ${e.place}, ${W.city || 'Karur'}</span></p>
           <p class="wd-ev__blurb">${e.blurb}</p>
         </div>
         <div class="wd-ev__act">

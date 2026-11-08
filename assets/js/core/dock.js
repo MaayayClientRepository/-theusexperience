@@ -37,7 +37,15 @@ function setActive(id) {
   const theme = sec?.el.dataset.theme || 'light';
   document.documentElement.dataset.theme = theme; orbs.setTheme(theme);
   const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = theme === 'dark' ? '#0D0B09' : '#FBF9F4';
+  remember(id);
   emit('section', { id, prev });
+}
+
+/* Keep the URL hash on the section in view. If the phone discards the tab to free memory and reloads it later, the page
+   comes back to the same section (the hash lives on the outer shell page, not on this iframe). */
+function remember(id) {
+  if (!id || document.documentElement.classList.contains('is-door')) return;
+  try { const w = window.parent !== window ? window.parent : window; w.history.replaceState(null, '', '#' + id); } catch (e) { /* cross-origin or blocked: ignore */ }
 }
 
 function measure() {
@@ -47,6 +55,7 @@ function measure() {
 }
 
 export function initDock() {
+  listen('door-open', () => setTimeout(() => remember(S.active), 100));
   const dock = S.dock = $('#dock'); if (!dock) return;
   S.secs = $$('main > [data-section]').map((el) => ({ id: el.id, el, dock: el.hasAttribute('data-dock'), title: el.dataset.title || el.id, icon: el.dataset.icon || 'sparkle' }));
   dock.innerHTML = '<span class="dock__ind" aria-hidden="true"></span>';

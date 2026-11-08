@@ -85,6 +85,7 @@
   #karur [data-k="glance"] { min-height: 380px; } #karur [data-k="sights"] { min-height: 300px; }
   #karur .kr-lead { text-align: left; } #karur .kr-headr { justify-content: flex-start; }
   #karur .screen__head { gap: 10px; flex-wrap: wrap; }
+  #karur .kr-headr { flex: 1 1 100%; min-width: 0; max-width: 100%; }
 }
 @media (max-width: 560px) {
   .kr-eat .kr-chips li:nth-child(n+2), .kr-trips .kr-chips li:nth-child(n+2) { display: none; }
