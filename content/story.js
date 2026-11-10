@@ -26,10 +26,10 @@ export default {
     open: {
       kicker: 'A long-read, in several acts',
       body: [
-        'When we finally got talking, Prem had plenty of stories, and Nivitha was always happy to hear them. One conversation led to another, and then another. Years later, we still haven’t run out of things to talk about and we don’t think we ever will.',
-        'We’ve explored new places, tried new things, watched far too many movies, and debated them long after the credits rolled. We may do things differently, but that’s part of the fun.',
-        'Nivitha keeps things grounded, Prem keeps things interesting, and neither of us is particularly good at letting the other have the last word. There’s always something to laugh about, something new to discover, or some plan that takes an unexpected turn... Honestly, we wouldn’t have it any other way.',
-        'Different ways of enjoying the world, but always making room for each other’s.',
+        'We knew of each other through mutual friends, but never really had a reason to talk. Eventually, we did, and the conversations just kept going. Years later, not much has changed.',
+        'Somewhere along the way, we picked up a habit of doing things together: finding new places, trying things neither of us had done before, watching movies and having our own little reviews long after everyone else had moved on. There’s rarely a dull moment, even when we’re doing absolutely nothing.',
+        'Nivitha keeps things grounded, Prem keeps things interesting, and neither of us is particularly good at letting the other have the last word. There’s always something to laugh about, something new to discover, or some plan that takes an unexpected turn… And we wouldn’t have it any other way.',
+        'Different ways of enjoying the world, but always making room for each other.',
       ],
     },
 
