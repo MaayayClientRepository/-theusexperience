@@ -86,8 +86,8 @@ export default {
   // The deadline card. `iso` drives the live countdown ("72 days left"); leave it '' to hide the number.
   deadline: {
     label: 'Kindly reply by',
-    date: '12 November 2026',
-    iso: '2026-11-12',
+    date: '15 November 2026',
+    iso: '2026-11-15',
     left: 'days left',
     leftOne: 'day left',
     today: 'Last call',
